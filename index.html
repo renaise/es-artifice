@@ -256,14 +256,12 @@
     .empty p { font-family: var(--mono); font-size: 10px; color: var(--text-3); }
 
     /* ---- Responsive ---- */
-    @media (min-width: 1400px) { .grid { grid-template-columns: repeat(8, 1fr); } }
-    @media (max-width: 900px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
     @media (max-width: 640px) {
       .header { grid-template-columns: 1fr 1fr; height: auto; padding: 12px 16px; gap: 8px; }
       .header-nav { display: none; }
       .header-right { justify-content: flex-end; }
       .grid-section { padding: 16px; }
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
       .card-title { font-size: 11px; }
       .footer { padding: 12px 16px; }
     }
@@ -277,10 +275,11 @@
     <span class="header-count" id="grid-count"></span>
   </div>
   <nav class="header-nav">
-    <a href="#" class="header-tab" data-tab="radar">Radar</a>
-    <a href="#" class="header-tab" data-tab="profiles">Profiles</a>
-    <a href="#" class="header-tab" data-tab="atlas">Atlas</a>
-    <a href="#" class="header-tab header-tab--active" data-tab="index">Index</a>
+    <a href="https://artificenyc.org/chapters" class="header-tab">Chapters</a>
+    <a href="https://artificenyc.org/comingsoon" class="header-tab">Nodes</a>
+    <a href="https://artificenyc.org/studio" class="header-tab">Studio Artifice</a>
+    <a href="https://artificenyc.org/about" class="header-tab">About Us</a>
+    <a href="https://artificenyc.org/contact" class="header-tab">Contact</a>
   </nav>
   <div class="header-right">
     <div class="view-toggle">

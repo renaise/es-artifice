@@ -139,16 +139,6 @@
     $viewGrid.classList.remove('view-btn--active');
   });
 
-  // Tab switching
-  document.querySelectorAll('.header-tab').forEach(function (tab) {
-    tab.addEventListener('click', function (e) {
-      e.preventDefault();
-      document.querySelectorAll('.header-tab').forEach(function (t) {
-        t.classList.remove('header-tab--active');
-      });
-      tab.classList.add('header-tab--active');
-    });
-  });
 
   render();
 })();
