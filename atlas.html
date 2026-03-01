@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas — Artifice Ecosystem</title>
+  <meta name="description" content="ATLAS [LOCATE] — A spatial index of venues, studios, and environments mapped to creative practice.">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Fragment Mono';
+      font-style: normal; font-display: swap; font-weight: 400;
+      src: url('https://cdn.jsdelivr.net/fontsource/fonts/fragment-mono@latest/latin-400-normal.woff2') format('woff2');
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111113;
+      --surface-elevated: #18181b;
+      --border: #1e1e22;
+      --border-light: #2a2a2e;
+      --text: #ededef;
+      --text-secondary: #9898a0;
+      --text-tertiary: #5a5a62;
+      --accent: #c8ff00;
+      --font-display: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'Fragment Mono', ui-monospace, monospace;
+    }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: var(--font-display);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr 380px;
+      grid-template-rows: 56px 1fr;
+      height: 100vh;
+    }
+    .layout.panel-closed { grid-template-columns: 320px 1fr 0px; }
+
+    /* Header */
+    .header {
+      grid-column: 1 / -1;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-logo {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      text-decoration: none;
+    }
+    .header-logo:hover { color: var(--text-secondary); }
+    .header-nav { display: flex; gap: 20px; align-items: center; }
+    .header-nav a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      padding-bottom: 2px;
+    }
+    .header-nav a:hover { color: var(--text); }
+    .header-nav a.active {
+      color: var(--text);
+      border-bottom: 1px solid var(--text);
+    }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .sidebar-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+    .sidebar-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+    }
+    .sidebar-search {
+      width: 100%;
+      height: 32px;
+      padding: 0 10px;
+      font-family: var(--font-display);
+      font-size: 13px;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      outline: none;
+    }
+    .sidebar-search::placeholder { color: var(--text-tertiary); }
+    .sidebar-search:focus { border-color: var(--border-light); }
+
+    .sidebar-filters {
+      padding: 10px 20px;
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 75px;
+      background: var(--bg);
+      z-index: 10;
+    }
+    .filter-btn {
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .filter-btn:hover { color: var(--text-secondary); }
+    .filter-btn.active {
+      color: var(--text);
+      border-color: var(--border);
+      background: var(--surface);
+    }
+
+    .space-list { list-style: none; }
+    .space-item {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .space-item:hover { background: var(--surface); }
+    .space-item.active { background: var(--surface-elevated); border-left: 2px solid var(--accent); }
+    .space-item-name {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .space-item-location {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+    }
+    .space-item-mode {
+      display: inline-block;
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+    }
+    .space-item-mode.whitebox { color: var(--text-secondary); }
+    .space-item-mode.blackbox { color: var(--text-tertiary); }
+
+    /* Map */
+    .map-container {
+      position: relative;
+    }
+    #map { width: 100%; height: 100%; }
+
+    /* Leaflet overrides */
+    .leaflet-container { background: #0a0a0a; }
+    .leaflet-control-zoom { border: 1px solid var(--border) !important; }
+    .leaflet-control-zoom a {
+      background: var(--bg) !important;
+      color: var(--text-tertiary) !important;
+      border-color: var(--border) !important;
+      width: 30px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+      font-size: 14px !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background: var(--surface) !important;
+      color: var(--text) !important;
+    }
+    .leaflet-control-attribution { display: none; }
+
+    .custom-marker {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 1px solid rgba(200, 255, 0, 0.4);
+      box-shadow: 0 0 8px rgba(200, 255, 0, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .custom-marker:hover {
+      transform: scale(1.5);
+      box-shadow: 0 0 16px rgba(200, 255, 0, 0.5);
+    }
+    .custom-marker.active {
+      transform: scale(1.8);
+      box-shadow: 0 0 20px rgba(200, 255, 0, 0.6);
+    }
+
+    /* Desc Panel */
+    .desc-panel {
+      overflow-y: auto;
+      border-left: 1px solid var(--border);
+      background: var(--bg);
+      transition: width 0.2s;
+    }
+    .panel-closed .desc-panel { display: none; }
+    .desc-panel-empty {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    .desc-panel-empty-text {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+    .desc-panel-header {
+      padding: 24px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .desc-panel-close {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-tertiary);
+      font-size: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .desc-panel-close:hover { color: var(--text); border-color: var(--border-light); }
+    .desc-panel-mode {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+    .desc-panel-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      padding: 0 24px;
+      margin-top: 4px;
+    }
+    .desc-panel-location {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+      padding: 6px 24px 0;
+    }
+    .desc-panel-divider {
+      margin: 20px 24px;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+    .desc-panel-section-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      padding: 0 24px;
+      margin-bottom: 8px;
+    }
+    .desc-panel-text {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      padding: 0 24px;
+    }
+    .desc-panel-meta {
+      padding: 0 24px;
+      margin-top: 16px;
+    }
+    .desc-panel-meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .desc-panel-meta-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+    }
+    .desc-panel-meta-value {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+      text-align: right;
+    }
+    .desc-panel-link {
+      display: inline-block;
+      margin: 20px 24px;
+      padding: 8px 16px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      border: 1px solid var(--border);
+      text-decoration: none;
+    }
+    .desc-panel-link:hover { background: var(--surface); border-color: var(--border-light); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; grid-template-rows: 56px 1fr; }
+      .sidebar { display: none; }
+      .desc-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout panel-closed" id="layout">
+
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-logo">Artifice [Ecosystem]</a>
+    </div>
+    <nav class="header-nav">
+      <a href="#">Radar</a>
+      <a href="#">Profiles</a>
+      <a href="#" class="active">Atlas</a>
+      <a href="#">Index</a>
+    </nav>
+    <div class="header-right">
+      <span class="header-count" id="space-count"></span>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Atlas [Locate]</div>
+      <input type="search" class="sidebar-search" id="search" placeholder="Search spaces..." autocomplete="off">
+    </div>
+    <div class="sidebar-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="WHITEBOX">Whitebox</button>
+      <button class="filter-btn" data-filter="BLACKBOX">Blackbox</button>
+    </div>
+    <ul class="space-list" id="space-list"></ul>
+  </aside>
+
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
+
+  <aside class="desc-panel" id="desc-panel">
+    <div class="desc-panel-empty" id="panel-empty">
+      <div class="desc-panel-empty-text">Select a space<br>to view details</div>
+    </div>
+    <div id="panel-content" style="display:none"></div>
+  </aside>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+  const SPACES = [
+    { id: 1, name: "Pioneer Works", location: "Red Hook, Brooklyn", borough: "Brooklyn", lat: 40.6785, lng: -74.0132, mode: "BLACKBOX", type: "Gallery / Residency", desc: "A multidisciplinary cultural center in a 25,000 sq ft industrial building. Exhibitions, residencies, performances, and science programs. One of the most significant independent art spaces in New York.", capacity: "500+", url: "https://pioneerworks.org" },
+    { id: 2, name: "Soho20 Gallery", location: "Brooklyn", borough: "Brooklyn", lat: 40.6782, lng: -73.9922, mode: "WHITEBOX", type: "Gallery / Artist-Run", desc: "Founded in 1973 as a feminist cooperative gallery. One of the longest-running artist-run spaces in the country. Exhibitions, workshops, and community programming.", capacity: "50-80", url: "https://soho20gallery.com" },
+    { id: 3, name: "SSHH", location: "Bushwick, Brooklyn", borough: "Brooklyn", lat: 40.7040, lng: -73.9210, mode: "BLACKBOX", type: "Project Space", desc: "An experimental project space in Bushwick focused on immersive and time-based work. Intimate scale, high production value.", capacity: "30-50", url: "" },
+    { id: 4, name: "XXXI", location: "Manhattan", borough: "Manhattan", lat: 40.7195, lng: -73.9946, mode: "WHITEBOX", type: "Mixed-Use / Design", desc: "A mixed-use project space for designers. Bridging commercial design practice and cultural programming.", capacity: "40-60", url: "" },
+    { id: 5, name: "A.I.R. Gallery", location: "Dumbo, Brooklyn", borough: "Brooklyn", lat: 40.7033, lng: -73.9880, mode: "WHITEBOX", type: "Gallery / Artist-Run", desc: "Founded in 1972. The first artist-run, not-for-profit gallery for women artists in the United States. Exhibitions, fellowships, and mentorship programs.", capacity: "60-100", url: "https://www.airgallery.org" },
+    { id: 6, name: "UsagiNY / Gift Shopping Brooklyn", location: "Williamsburg, Brooklyn", borough: "Brooklyn", lat: 40.7100, lng: -73.9565, mode: "BLACKBOX", type: "Retail / Cultural", desc: "A curated retail and cultural space in Williamsburg. Merges commerce with exhibition, hosting rotating installations alongside independent design goods.", capacity: "30-40", url: "" },
+    { id: 7, name: "MINUS SPACE", location: "Brooklyn", borough: "Brooklyn", lat: 40.6859, lng: -73.9863, mode: "WHITEBOX", type: "Gallery", desc: "A gallery focused on reductive and abstract art. Rigorous curatorial program emphasizing process-driven work and material specificity.", capacity: "40-60", url: "https://minusspace.com" },
+    { id: 8, name: "Babycastles", location: "Manhattan", borough: "Manhattan", lat: 40.7505, lng: -73.9934, mode: "BLACKBOX", type: "Gallery / Arcade", desc: "A nonprofit collective and DIY gallery fostering and amplifying diverse voices in video game culture. Arcade cabinets, exhibitions, workshops, and performances.", capacity: "80-120", url: "https://babycastles.com" },
+    { id: 9, name: "MURMRR | Gather", location: "Brooklyn", borough: "Brooklyn", lat: 40.6833, lng: -73.9775, mode: "BLACKBOX", type: "Performance / Venue", desc: "An intimate performance space inside a converted 1840s church in Boerum Hill. Music, film screenings, and cross-disciplinary programming.", capacity: "100-150", url: "https://murmrr.com" },
+    { id: 10, name: "Death By Audio Arcade", location: "Williamsburg, Brooklyn", borough: "Brooklyn", lat: 40.7117, lng: -73.9604, mode: "BLACKBOX", type: "Arcade / Cultural", desc: "A collection of handmade arcade cabinets created by indie game developers. Pop-up installations at festivals and cultural institutions worldwide.", capacity: "Variable", url: "https://www.deathbyaudioarcade.com" },
+    { id: 11, name: "Wonderville", location: "Brooklyn", borough: "Brooklyn", lat: 40.6868, lng: -73.9777, mode: "BLACKBOX", type: "Bar / Arcade / Venue", desc: "An arcade bar and event space showcasing indie games alongside performances, screenings, and experimental programming. Community-owned cooperative.", capacity: "100-150", url: "https://www.wonderville.nyc" },
+    { id: 12, name: "Knockdown Center", location: "Maspeth, Queens", borough: "Queens", lat: 40.7094, lng: -73.9166, mode: "BLACKBOX", type: "Venue / Cultural Center", desc: "A 50,000 sq ft multidisciplinary venue in a former door factory. Large-scale exhibitions, performances, film screenings, and immersive events.", capacity: "1,000+", url: "https://knockdown.center" },
+    { id: 13, name: "The Hole NYC", location: "Bowery, Manhattan", borough: "Manhattan", lat: 40.7186, lng: -73.9929, mode: "BLACKBOX", type: "Gallery", desc: "A contemporary art gallery on the Bowery. Known for emerging and mid-career artists working across painting, sculpture, and new media.", capacity: "60-80", url: "https://theholenyc.com" },
+    { id: 14, name: "WhiteBox", location: "LES, Manhattan", borough: "Manhattan", lat: 40.7221, lng: -73.9925, mode: "WHITEBOX", type: "Gallery / Nonprofit", desc: "A nonprofit art space on the Lower East Side. International exhibitions, residencies, and public programs focused on social practice and research-driven work.", capacity: "80-100", url: "" },
+    { id: 15, name: "The Kitchen", location: "Chelsea, Manhattan", borough: "Manhattan", lat: 40.7412, lng: -74.0059, mode: "BLACKBOX", type: "Performance / Gallery", desc: "One of New York's oldest nonprofit performance and exhibition spaces. Founded 1971. Commissions and presents experimental work across disciplines.", capacity: "200+", url: "https://thekitchen.org" },
+    { id: 16, name: "Rubin Museum of Art", location: "Chelsea, Manhattan", borough: "Manhattan", lat: 40.7402, lng: -73.9971, mode: "BLACKBOX", type: "Museum", desc: "A museum dedicated to the art and cultures of the Himalayas and neighboring regions. Immersive exhibitions, performances, and contemplative programming.", capacity: "500+", url: "https://rubinmuseum.org" },
+    { id: 17, name: "ENORME", location: "Brooklyn", borough: "Brooklyn", lat: 40.7065, lng: -73.9432, mode: "BLACKBOX", type: "Project Space", desc: "A project by EyeBodega. Exhibition and event space for emerging artists and designers. Focused on graphic culture and visual communication.", capacity: "30-50", url: "" },
+    { id: 18, name: "ONX Studio", location: "Tribeca, Manhattan", borough: "Manhattan", lat: 40.7163, lng: -74.0086, mode: "BLACKBOX", type: "Studio / Lab", desc: "Onassis Foundation's art and technology platform. Motion capture, projection, AI/generative infrastructure. Venue for nodes:ii (April 2026). 6,000 sq ft dedicated to immersive and new media production.", capacity: "150-250", url: "https://onx.studio" },
+    { id: 19, name: "NEW INC", location: "Financial District, Manhattan", borough: "Manhattan", lat: 40.7065, lng: -74.0089, mode: "WHITEBOX", type: "Incubator", desc: "New Museum's incubator for art, design, and technology. Year-long program supporting practitioners building new models for creative practice and cultural infrastructure.", capacity: "50-80", url: "https://www.newinc.org" },
+    { id: 20, name: "WBX Harlem", location: "Harlem, Manhattan", borough: "Manhattan", lat: 40.8116, lng: -73.9465, mode: "WHITEBOX", type: "Studio / Gallery", desc: "A Harlem-based studio and gallery space. Community-oriented programming connecting local artists with broader creative networks.", capacity: "40-60", url: "" }
+  ];
+
+  let activeFilter = 'all';
+  let activeSpaceId = null;
+  let markers = {};
+
+  // Init map
+  const map = L.map('map', {
+    center: [40.7128, -73.9800],
+    zoom: 12,
+    zoomControl: true,
+    attributionControl: false
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  // Custom marker icon
+  function createIcon(isActive) {
+    return L.divIcon({
+      className: 'custom-marker' + (isActive ? ' active' : ''),
+      iconSize: [10, 10],
+      iconAnchor: [5, 5]
+    });
+  }
+
+  // Render space list
+  function renderList() {
+    const list = document.getElementById('space-list');
+    const query = document.getElementById('search').value.toLowerCase();
+    list.innerHTML = '';
+
+    const filtered = SPACES.filter(function(s) {
+      const matchesFilter = activeFilter === 'all' || s.mode === activeFilter;
+      const matchesSearch = !query || s.name.toLowerCase().includes(query) || s.location.toLowerCase().includes(query) || s.borough.toLowerCase().includes(query);
+      return matchesFilter && matchesSearch;
+    });
+
+    document.getElementById('space-count').textContent = filtered.length + ' spaces';
+
+    filtered.forEach(function(s) {
+      const li = document.createElement('li');
+      li.className = 'space-item' + (s.id === activeSpaceId ? ' active' : '');
+      li.innerHTML =
+        '<div class="space-item-name">' + s.name + '</div>' +
+        '<div class="space-item-location">' + s.location + '</div>' +
+        '<span class="space-item-mode ' + s.mode.toLowerCase() + '">' + s.mode + '</span>';
+      li.addEventListener('click', function() { selectSpace(s.id); });
+      list.appendChild(li);
+    });
+  }
+
+  // Render markers
+  function renderMarkers() {
+    Object.values(markers).forEach(function(m) { map.removeLayer(m); });
+    markers = {};
+    const query = document.getElementById('search').value.toLowerCase();
+
+    SPACES.forEach(function(s) {
+      const matchesFilter = activeFilter === 'all' || s.mode === activeFilter;
+      const matchesSearch = !query || s.name.toLowerCase().includes(query) || s.location.toLowerCase().includes(query) || s.borough.toLowerCase().includes(query);
+      if (!matchesFilter || !matchesSearch) return;
+
+      const marker = L.marker([s.lat, s.lng], {
+        icon: createIcon(s.id === activeSpaceId)
+      }).addTo(map);
+      marker.on('click', function() { selectSpace(s.id); });
+      markers[s.id] = marker;
+    });
+  }
+
+  // Select space
+  function selectSpace(id) {
+    activeSpaceId = id;
+    const s = SPACES.find(function(sp) { return sp.id === id; });
+    if (!s) return;
+
+    // Update layout
+    document.getElementById('layout').classList.remove('panel-closed');
+
+    // Update panel
+    document.getElementById('panel-empty').style.display = 'none';
+    const panel = document.getElementById('panel-content');
+    panel.style.display = 'block';
+    panel.innerHTML =
+      '<div class="desc-panel-header">' +
+        '<div class="desc-panel-mode">' + s.mode + '</div>' +
+        '<button class="desc-panel-close" id="panel-close">&times;</button>' +
+      '</div>' +
+      '<div class="desc-panel-name">' + s.name + '</div>' +
+      '<div class="desc-panel-location">' + s.location + '</div>' +
+      '<hr class="desc-panel-divider">' +
+      '<div class="desc-panel-section-label">Description</div>' +
+      '<div class="desc-panel-text">' + s.desc + '</div>' +
+      '<div class="desc-panel-meta">' +
+        '<div class="desc-panel-meta-row"><span class="desc-panel-meta-label">Type</span><span class="desc-panel-meta-value">' + s.type + '</span></div>' +
+        '<div class="desc-panel-meta-row"><span class="desc-panel-meta-label">Borough</span><span class="desc-panel-meta-value">' + s.borough + '</span></div>' +
+        '<div class="desc-panel-meta-row"><span class="desc-panel-meta-label">Capacity</span><span class="desc-panel-meta-value">' + s.capacity + '</span></div>' +
+        '<div class="desc-panel-meta-row"><span class="desc-panel-meta-label">Mode</span><span class="desc-panel-meta-value">' + s.mode + '</span></div>' +
+      '</div>' +
+      (s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener" class="desc-panel-link">Visit &rarr;</a>' : '');
+
+    document.getElementById('panel-close').addEventListener('click', closePanel);
+
+    // Update map
+    map.flyTo([s.lat, s.lng], 14, { duration: 0.5 });
+
+    // Update markers
+    Object.keys(markers).forEach(function(mid) {
+      markers[mid].setIcon(createIcon(parseInt(mid) === id));
+    });
+
+    // Update list
+    renderList();
+    setTimeout(function() { map.invalidateSize(); }, 250);
+  }
+
+  function closePanel() {
+    activeSpaceId = null;
+    document.getElementById('layout').classList.add('panel-closed');
+    document.getElementById('panel-empty').style.display = 'flex';
+    document.getElementById('panel-content').style.display = 'none';
+    Object.keys(markers).forEach(function(mid) {
+      markers[mid].setIcon(createIcon(false));
+    });
+    renderList();
+    setTimeout(function() { map.invalidateSize(); }, 250);
+  }
+
+  // Filters
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      activeFilter = btn.dataset.filter;
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderList();
+      renderMarkers();
+    });
+  });
+
+  // Search
+  document.getElementById('search').addEventListener('input', function() {
+    renderList();
+    renderMarkers();
+  });
+
+  // Init
+  renderList();
+  renderMarkers();
+})();
+</script>
+
+</body>
+</html>
