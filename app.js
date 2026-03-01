@@ -118,6 +118,20 @@
     render();
   });
 
+  // View toggle
+  var $viewGrid = document.getElementById('view-grid');
+  var $viewList = document.getElementById('view-list');
+  $viewGrid.addEventListener('click', function () {
+    $grid.classList.remove('grid--list');
+    $viewGrid.classList.add('view-btn--active');
+    $viewList.classList.remove('view-btn--active');
+  });
+  $viewList.addEventListener('click', function () {
+    $grid.classList.add('grid--list');
+    $viewList.classList.add('view-btn--active');
+    $viewGrid.classList.remove('view-btn--active');
+  });
+
   // Tab switching
   document.querySelectorAll('.header-tab').forEach(function (tab) {
     tab.addEventListener('click', function (e) {
