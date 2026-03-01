@@ -68,6 +68,12 @@
     return 'tag--both';
   }
 
+  function modeIcons(mode) {
+    if (mode === 'WHITEBOX') return '<img src="wb-icon.png" class="mode-icon" alt="WHITEBOX">';
+    if (mode === 'BLACKBOX') return '<img src="bb-icon.png" class="mode-icon" alt="BLACKBOX">';
+    return '<img src="wb-icon.png" class="mode-icon" alt="WHITEBOX"> <img src="bb-icon.png" class="mode-icon" alt="BLACKBOX">';
+  }
+
   function getFiltered() {
     if (!currentQuery.trim()) return ARTIFACTS;
     var q = currentQuery.toLowerCase();
@@ -93,14 +99,14 @@
             '<img class="card-img" src="' + esc(a.thumb) + '" alt="' + esc(a.title) + '" loading="lazy">' +
             '<div class="card-overlay">' +
               '<span class="card-overlay-line">' + esc(typeLabel) + '</span>' +
-              '<span class="card-overlay-mode card-overlay-mode--' + (a.mode === 'WHITEBOX' ? 'wb' : a.mode === 'BLACKBOX' ? 'bb' : 'both') + '">' + esc(a.mode) + '</span>' +
+              '<span class="card-overlay-mode card-overlay-mode--' + (a.mode === 'WHITEBOX' ? 'wb' : a.mode === 'BLACKBOX' ? 'bb' : 'both') + '">' + modeIcons(a.mode) + '</span>' +
               '<span class="card-overlay-line">' + esc(a.entity) + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="card-body">' +
             '<span class="card-code">' + esc(a.code) + '</span>' +
             '<div class="card-title">' + esc(a.title) + '</div>' +
-            '<div class="card-meta">' + esc(typeLabel) + '</div>' +
+            '<div class="card-meta">' + esc(typeLabel) + ' ' + modeIcons(a.mode) + '</div>' +
           '</div>' +
         '</div>';
       $grid.appendChild(li);
