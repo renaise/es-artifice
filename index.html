@@ -89,10 +89,12 @@
     .header-tab--active { color: var(--text); border-bottom-color: var(--text); }
 
     .header-right {
-      display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      min-width: 0; flex-shrink: 1;
     }
     .header-search {
-      width: 140px; height: 28px; padding: 0 10px;
+      width: 140px; min-width: 0; flex-shrink: 1;
+      height: 28px; padding: 0 10px;
       font-family: var(--mono); font-size: 10px;
       color: var(--text); background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.25); border-radius: 2px; outline: none;
@@ -103,8 +105,8 @@
       font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; letter-spacing: 0.04em;
       color: var(--bg); background: var(--text);
-      border: none; padding: 5px 12px; cursor: pointer;
-      text-decoration: none;
+      border: none; padding: 5px 10px; cursor: pointer;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
     }
     .header-cta:hover { background: var(--text-2); }
 
@@ -113,7 +115,7 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 16px;
+      gap: 24px;
       list-style: none;
     }
     .card { min-width: 0; overflow: hidden; }
@@ -259,15 +261,20 @@
       .header { height: auto; min-height: 48px; padding: 8px 16px; }
       .header-logo-img { height: 56px; }
       .header-tab { padding: 10px 8px; font-size: 10px; }
-      .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     }
     @media (max-width: 640px) {
-      .header { grid-template-columns: 1fr 1fr; }
+      .header { grid-template-columns: auto 1fr; gap: 6px; padding: 8px 12px; }
       .header-nav { display: none; }
-      .header-right { justify-content: flex-end; }
+      .header-right { justify-content: flex-end; gap: 6px; }
+      .header-left { gap: 6px; }
       .header-logo-img { height: 40px; }
+      .header-search { width: 80px; font-size: 9px; height: 26px; padding: 0 6px; }
+      .header-cta { font-size: 8px; padding: 4px 8px; }
+      .view-btn { width: 24px; height: 24px; }
+      .view-btn svg { width: 10px; height: 10px; }
       .grid-section { padding: 12px; }
-      .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
       .card-title { font-size: 11px; }
       .card-meta { font-size: 8px; gap: 4px; }
       .mode-icon { height: 10px; }
