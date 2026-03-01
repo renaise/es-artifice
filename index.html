@@ -92,13 +92,13 @@
       display: flex; align-items: center; justify-content: flex-end; gap: 12px;
     }
     .header-search {
-      width: 120px; height: 26px; padding: 0 8px;
-      font-family: var(--mono); font-size: 9px;
-      color: var(--text); background: transparent;
-      border: 1px solid var(--border); outline: none;
+      width: 140px; height: 28px; padding: 0 10px;
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text); background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.25); border-radius: 2px; outline: none;
     }
-    .header-search::placeholder { color: var(--text-3); }
-    .header-search:focus { border-color: var(--text-3); }
+    .header-search::placeholder { color: rgba(255,255,255,0.5); }
+    .header-search:focus { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.12); }
     .header-cta {
       font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; letter-spacing: 0.04em;
@@ -109,13 +109,14 @@
     .header-cta:hover { background: var(--text-2); }
 
     /* ---- Grid ---- */
-    .grid-section { padding: 24px; }
+    .grid-section { padding: 24px; overflow: hidden; }
     .grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 16px;
       list-style: none;
     }
+    .card { min-width: 0; overflow: hidden; }
 
     .card {}
     .card-link { display: block; text-decoration: none; color: inherit; }
@@ -258,22 +259,17 @@
       .header { height: auto; min-height: 48px; padding: 8px 16px; }
       .header-logo-img { height: 56px; }
       .header-tab { padding: 10px 8px; font-size: 10px; }
-    }
-    @media (max-width: 768px) {
-      .header { grid-template-columns: 1fr; justify-items: center; gap: 4px; }
-      .header-left { justify-content: center; }
-      .header-nav { flex-wrap: wrap; justify-content: center; }
-      .header-right { justify-content: center; width: 100%; }
       .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
     }
-    @media (max-width: 480px) {
-      .header-nav { display: none; }
+    @media (max-width: 640px) {
       .header { grid-template-columns: 1fr 1fr; }
+      .header-nav { display: none; }
       .header-right { justify-content: flex-end; }
+      .header-logo-img { height: 40px; }
       .grid-section { padding: 12px; }
       .grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
       .card-title { font-size: 11px; }
-      .card-meta { font-size: 8px; }
+      .card-meta { font-size: 8px; gap: 4px; }
       .mode-icon { height: 10px; }
       .footer { padding: 12px 16px; }
     }
