@@ -163,6 +163,34 @@
       line-height: 1.5;
     }
 
+    /* ---- Schema ---- */
+    .schema-section {
+      padding: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .schema-label {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+    .schema-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2px;
+    }
+    .schema-field {
+      background: var(--surface); padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .sf-name {
+      font-family: var(--font-mono); font-size: 10px;
+      text-transform: uppercase; color: var(--text);
+    }
+    .sf-type {
+      font-family: var(--font-mono); font-size: 8px;
+      color: var(--text-tertiary); line-height: 1.4;
+    }
+
     /* ---- Entities ---- */
     .entities-section {
       padding: 24px;
@@ -235,7 +263,7 @@
 </header>
 
 <section class="infra-section">
-  <div class="infra-label">Infrastructure</div>
+  <div class="infra-label">Infrastructure — the books are databases of a shared schema</div>
   <div class="infra-flow">
     <div class="infra-node">
       <span class="infra-node-name">Radar</span>
@@ -303,6 +331,25 @@
       <span class="sys-card-name">Index</span>
       <span class="sys-card-desc">Work + projects + programs, indexed with full provenance. Contains Artifacts [Objects] and Worlds [Capture] — URL [Digital Projects] + IRL [Experiential Programs].</span>
     </div>
+  </div>
+</section>
+
+<section class="schema-section">
+  <div class="schema-label">Shared Schema</div>
+  <div class="schema-grid">
+    <div class="schema-field"><span class="sf-name">Book</span><span class="sf-type">Radar / Profiles / Atlas / Index</span></div>
+    <div class="schema-field"><span class="sf-name">Cover</span><span class="sf-type">Image</span></div>
+    <div class="schema-field"><span class="sf-name">Title</span><span class="sf-type">Text</span></div>
+    <div class="schema-field"><span class="sf-name">Authors</span><span class="sf-type">Relation &rarr; Profiles</span></div>
+    <div class="schema-field"><span class="sf-name">Description</span><span class="sf-type">Long text</span></div>
+    <div class="schema-field"><span class="sf-name">Medium</span><span class="sf-type">Object / Spatial / Digital / Performance / Protocol / Interface / Documentation / Environmental</span></div>
+    <div class="schema-field"><span class="sf-name">Mode</span><span class="sf-type">WHITEBOX / BLACKBOX / Both</span></div>
+    <div class="schema-field"><span class="sf-name">Entity</span><span class="sf-type">Studio Artifice / Artifice NYC / Both</span></div>
+    <div class="schema-field"><span class="sf-name">Status</span><span class="sf-type">Draft &rarr; In Review &rarr; Published &rarr; Archived</span></div>
+    <div class="schema-field"><span class="sf-name">Tags</span><span class="sf-type">Multi-select</span></div>
+    <div class="schema-field"><span class="sf-name">Date Added</span><span class="sf-type">Date</span></div>
+    <div class="schema-field"><span class="sf-name">Source</span><span class="sf-type">Provenance</span></div>
+    <div class="schema-field"><span class="sf-name">Relations</span><span class="sf-type">Cross-book links</span></div>
   </div>
 </section>
 
