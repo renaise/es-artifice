@@ -3,251 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecosystem — Artifice</title>
-  <meta name="description" content="The Artifice Ecosystem — four systems: discover, connect, locate, archive. Connected through the work.">
-  <meta property="og:title" content="Ecosystem — Artifice">
-  <meta property="og:description" content="The infrastructure is not behind the scenes. It is the practice.">
+  <title>The Artifact Index — Artifice</title>
+  <meta name="description" content="The Artifact Index — a structured, relational dataset of creative process. Discover, connect, locate, archive.">
+  <meta property="og:title" content="The Artifact Index — Artifice">
+  <meta property="og:description" content="Discover, connect, locate, archive — connected through the work.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://es.artificenyc.org">
+  <meta property="og:url" content="https://index.artificenyc.org">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <meta property="og:image" content="https://es.artificenyc.org/og-image.png">
+  <meta property="og:image" content="https://index.artificenyc.org/og-image.png">
   <meta property="og:image:width" content="669">
   <meta property="og:image:height" content="609">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:image" content="https://es.artificenyc.org/og-image.png">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="twitter:image" content="https://index.artificenyc.org/og-image.png">
   <style>
+    @font-face {
+      font-family: 'Helvetica Now Display';
+      src: local('Helvetica Now Display'), local('HelveticaNowDisplay-Regular'),
+           url('fonts/HelveticaNowDisplay-Regular.woff2') format('woff2');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Helvetica Now Display';
+      src: local('Helvetica Now Display Light'), local('HelveticaNowDisplay-Light'),
+           url('fonts/HelveticaNowDisplay-Light.woff2') format('woff2');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
     @font-face {
       font-family: 'Fragment Mono';
       font-style: normal; font-display: swap; font-weight: 400;
       src: url('https://cdn.jsdelivr.net/fontsource/fonts/fragment-mono@latest/latin-400-normal.woff2') format('woff2');
     }
-    @font-face {
-      font-family: 'Helvetica Now Display';
-      src: url('https://index.artificenyc.org/fonts/HelveticaNowDisplay-Light.woff2') format('woff2');
-      font-weight: 300; font-style: normal; font-display: swap;
-    }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0a0a0a;
-      --surface: #111113;
-      --border: #1e1e22;
-      --text: #ededef;
-      --text-secondary: #9898a0;
-      --text-tertiary: #5a5a62;
-      --font-display: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      --font-mono: 'Fragment Mono', ui-monospace, monospace;
+      --bg: #000; --surface: #0a0a0a; --border: #1a1a1a;
+      --text: #fff; --text-2: #999; --text-3: #555;
+      --mono: 'Fragment Mono', ui-monospace, monospace;
+      --sans: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --wb: #8ac; --bb: #c8a; --both: #ac8;
     }
 
-    html { height: 100%; }
     body {
-      font-family: var(--font-display);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
+      font-family: var(--sans); background: var(--bg); color: var(--text);
+      min-height: 100vh; -webkit-font-smoothing: antialiased;
     }
 
+    /* ---- Header ---- */
     .header {
       position: sticky; top: 0; z-index: 50;
-      padding: 0 24px; height: 44px;
-      display: flex; align-items: center; justify-content: space-between;
+      height: 48px; padding: 0 24px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center;
       background: var(--bg); border-bottom: 1px solid var(--border);
     }
+    .header-left {
+      display: flex; align-items: center; gap: 16px;
+    }
     .header-logo {
-      font-family: var(--font-mono); font-size: 10px;
+      font-family: var(--mono); font-size: 10px;
       text-transform: uppercase; letter-spacing: 0.06em;
       color: var(--text); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
     }
-    .header-logo:hover { color: var(--text-secondary); }
-    .header-nav { display: flex; gap: 16px; }
-    .header-nav a {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--text-tertiary); text-decoration: none;
+    .header-logo:hover { color: var(--text-2); }
+    .header-logo-img { width: 20px; height: 20px; display: block; }
+    .header-count {
+      font-family: var(--mono); font-size: 9px;
+      color: var(--text-3);
     }
-    .header-nav a:hover { color: var(--text); }
 
-    /* ---- Infrastructure diagram ---- */
-    .infra-section {
-      padding: 48px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .infra-label {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
-      margin-bottom: 24px;
-    }
-    .infra-flow {
-      display: flex; align-items: flex-start; gap: 0;
-      flex-wrap: wrap; margin-bottom: 20px;
-    }
-    .infra-node {
-      display: flex; flex-direction: column; gap: 2px;
-    }
-    .infra-node-name {
-      font-family: var(--font-mono); font-size: 14px;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--text);
-    }
-    .infra-node-verb {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
-    }
-    .infra-arrow {
-      font-family: var(--font-mono); font-size: 12px;
-      color: var(--text-tertiary); padding: 2px 16px 0;
-      opacity: 0.4;
-    }
-    .infra-sub {
-      padding-left: 0; margin-top: 16px;
-    }
-    .infra-sub-row {
-      display: flex; align-items: center; gap: 0;
-      margin-bottom: 6px;
-    }
-    .infra-sub-indent {
-      width: 24px; flex-shrink: 0;
-      border-left: 1px solid var(--border);
-      height: 20px;
-    }
-    .infra-sub-arrow {
-      font-family: var(--font-mono); font-size: 10px;
-      color: var(--text-tertiary); opacity: 0.3;
-      margin-right: 8px;
-    }
-    .infra-sub-name {
-      font-family: var(--font-mono); font-size: 11px;
-      text-transform: uppercase; color: var(--text-secondary);
-    }
-    .infra-sub-verb {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
-      margin-left: 6px;
-    }
-    .infra-sub-child {
-      margin-left: 48px; margin-bottom: 4px;
+    .header-nav {
       display: flex; align-items: center; gap: 0;
     }
-
-    /* ---- Systems grid ---- */
-    .systems-section {
-      padding: 24px;
-    }
-    .systems-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 2px;
-    }
-    .sys-card {
-      background: var(--surface);
-      padding: 20px;
-      display: flex; flex-direction: column; gap: 8px;
-    }
-    .sys-card-verb {
-      font-family: var(--font-mono); font-size: 8px;
-      text-transform: uppercase; color: var(--text-tertiary);
-    }
-    .sys-card-name {
-      font-family: var(--font-mono); font-size: 13px;
+    .header-tab {
+      font-family: var(--mono); font-size: 10px;
       text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--text);
+      color: var(--text-3); text-decoration: none;
+      padding: 15px 14px; border-bottom: 1px solid transparent;
+      margin-bottom: -1px; transition: color 0.12s;
     }
-    .sys-card-desc {
-      font-family: var(--font-display); font-size: 12px;
-      font-weight: 300; color: var(--text-secondary);
-      line-height: 1.5;
-    }
+    .header-tab:hover { color: var(--text-2); }
+    .header-tab--active { color: var(--text); border-bottom-color: var(--text); }
 
-    /* ---- Schema ---- */
-    .schema-section {
-      padding: 24px;
-      border-top: 1px solid var(--border);
+    .header-right {
+      display: flex; align-items: center; justify-content: flex-end; gap: 12px;
     }
-    .schema-label {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
-      margin-bottom: 16px;
+    .header-search {
+      width: 120px; height: 26px; padding: 0 8px;
+      font-family: var(--mono); font-size: 9px;
+      color: var(--text); background: transparent;
+      border: 1px solid var(--border); outline: none;
     }
-    .schema-grid {
+    .header-search::placeholder { color: var(--text-3); }
+    .header-search:focus { border-color: var(--text-3); }
+    .header-cta {
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--bg); background: var(--text);
+      border: none; padding: 5px 12px; cursor: pointer;
+      text-decoration: none;
+    }
+    .header-cta:hover { background: var(--text-2); }
+
+    /* ---- Grid ---- */
+    .grid-section { padding: 24px; }
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 2px;
-    }
-    .schema-field {
-      background: var(--surface); padding: 10px 12px;
-      display: flex; flex-direction: column; gap: 3px;
-    }
-    .sf-name {
-      font-family: var(--font-mono); font-size: 10px;
-      text-transform: uppercase; color: var(--text);
-    }
-    .sf-type {
-      font-family: var(--font-mono); font-size: 8px;
-      color: var(--text-tertiary); line-height: 1.4;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      list-style: none;
     }
 
-    /* ---- Entities ---- */
-    .entities-section {
-      padding: 24px;
-      border-top: 1px solid var(--border);
+    .card {}
+    .card-link { display: block; text-decoration: none; color: inherit; }
+    .card-img-wrap {
+      position: relative; overflow: hidden;
+      background: var(--surface); border-radius: 50%;
     }
-    .entities-label {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
-      margin-bottom: 16px;
+    .card-img {
+      width: 100%; aspect-ratio: 1; object-fit: cover;
+      display: block; transition: opacity 0.2s;
+      border-radius: 50%;
     }
-    .entities-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 2px;
+    .card-link:hover .card-img { opacity: 0.7; }
+    .card-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; padding: 10px;
+      background: rgba(0,0,0,0.6); border-radius: 50%;
+      opacity: 0; transition: opacity 0.2s;
     }
-    .ent-card {
-      background: var(--surface); padding: 16px;
-      display: flex; flex-direction: column; gap: 4px;
+    .card-link:hover .card-overlay { opacity: 1; }
+    .card-overlay-line {
+      font-family: var(--mono); font-size: 8px;
+      text-transform: uppercase; color: var(--text-2);
     }
-    .ent-name {
-      font-family: var(--font-mono); font-size: 10px;
-      text-transform: uppercase; color: var(--text);
+    .card-overlay-mode {
+      font-family: var(--mono); font-size: 8px;
+      text-transform: uppercase;
     }
-    .ent-type {
-      font-family: var(--font-mono); font-size: 8px;
-      text-transform: uppercase; color: var(--text-tertiary);
+    .card-overlay-mode--wb { color: var(--wb); }
+    .card-overlay-mode--bb { color: var(--bb); }
+    .card-overlay-mode--both { color: var(--both); }
+
+    .card-body { padding: 8px 0 0; }
+    .card-code {
+      font-family: var(--mono); font-size: 9px;
+      color: var(--text-3); text-transform: uppercase;
     }
-    .ent-desc {
-      font-family: var(--font-display); font-size: 11px;
-      font-weight: 300; color: var(--text-secondary);
-      line-height: 1.4; margin-top: 4px;
+    .card-title {
+      font-family: var(--sans); font-size: 13px; font-weight: 400;
+      color: var(--text); line-height: 1.3; margin-top: 2px;
+    }
+    .card-meta {
+      font-family: var(--mono); font-size: 8px;
+      color: var(--text-3); text-transform: uppercase;
+      margin-top: 4px;
     }
 
+    /* ---- Submit ---- */
+    .submit-section {
+      padding: 48px 24px; border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .submit-label {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 12px;
+    }
+    .submit-btn {
+      display: inline-block; padding: 10px 24px;
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text); background: transparent;
+      border: 1px solid var(--border); text-decoration: none;
+    }
+    .submit-btn:hover { border-color: var(--text-3); background: var(--surface); }
+
+    /* ---- Footer ---- */
     .footer {
-      padding: 16px 24px;
-      border-top: 1px solid var(--border);
+      padding: 16px 24px; border-top: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 8px;
     }
     .footer-text {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-3);
     }
     .footer-links { display: flex; gap: 12px; }
     .footer-links a {
-      font-family: var(--font-mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-tertiary);
-      text-decoration: none;
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-3); text-decoration: none;
     }
-    .footer-links a:hover { color: var(--text-secondary); }
+    .footer-links a:hover { color: var(--text-2); }
 
+    .empty { padding: 80px 0; text-align: center; }
+    .empty p { font-family: var(--mono); font-size: 10px; color: var(--text-3); }
+
+    /* ---- Responsive ---- */
+    @media (min-width: 1400px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
     @media (max-width: 640px) {
-      .header { padding: 0 16px; }
-      .infra-section { padding: 32px 16px; }
-      .infra-arrow { padding: 2px 8px 0; }
-      .systems-section { padding: 16px; }
-      .entities-section { padding: 16px; }
+      .header { grid-template-columns: 1fr 1fr; height: auto; padding: 12px 16px; gap: 8px; }
+      .header-nav { display: none; }
+      .header-right { justify-content: flex-end; }
+      .grid-section { padding: 16px; }
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .card-title { font-size: 11px; }
       .footer { padding: 12px 16px; }
     }
   </style>
@@ -255,134 +220,41 @@
 <body>
 
 <header class="header">
-  <a href="https://artificenyc.org" class="header-logo" target="_blank" rel="noopener">Artifice</a>
+  <div class="header-left">
+    <a href="/" class="header-logo"><img src="logo.png" alt="Artifice" class="header-logo-img"> Artifice</a>
+    <span class="header-count" id="grid-count"></span>
+  </div>
   <nav class="header-nav">
-    <a href="https://index.artificenyc.org">Index</a>
-    <a href="https://artificenyc.org" target="_blank" rel="noopener">artificenyc.org</a>
+    <a href="#" class="header-tab" data-tab="radar">Radar</a>
+    <a href="#" class="header-tab" data-tab="profiles">Profiles</a>
+    <a href="#" class="header-tab" data-tab="atlas">Atlas</a>
+    <a href="#" class="header-tab header-tab--active" data-tab="index">Index</a>
   </nav>
+  <div class="header-right">
+    <input type="search" class="header-search" id="search-input" placeholder="Search..." autocomplete="off">
+    <a href="#submit" class="header-cta">Submit</a>
+  </div>
 </header>
 
-<section class="infra-section">
-  <div class="infra-label">Infrastructure — the books are databases of a shared schema</div>
-  <div class="infra-flow">
-    <div class="infra-node">
-      <span class="infra-node-name">Radar</span>
-      <span class="infra-node-verb">[Discover]</span>
-    </div>
-    <span class="infra-arrow">&rarr;</span>
-    <div class="infra-node">
-      <span class="infra-node-name">Profiles</span>
-      <span class="infra-node-verb">[Connect]</span>
-    </div>
-    <span class="infra-arrow">&rarr;</span>
-    <div class="infra-node">
-      <span class="infra-node-name">Atlas</span>
-      <span class="infra-node-verb">[Locate]</span>
-    </div>
-    <span class="infra-arrow">&rarr;</span>
-    <div class="infra-node">
-      <span class="infra-node-name">Index</span>
-      <span class="infra-node-verb">[Archive]</span>
-    </div>
-  </div>
-  <div class="infra-sub">
-    <div class="infra-sub-row">
-      <div class="infra-sub-indent"></div>
-      <span class="infra-sub-arrow">&rarr;</span>
-      <span class="infra-sub-name">Artifacts</span>
-      <span class="infra-sub-verb">[Objects]</span>
-    </div>
-    <div class="infra-sub-row">
-      <div class="infra-sub-indent"></div>
-      <span class="infra-sub-arrow">&rarr;</span>
-      <span class="infra-sub-name">Worlds</span>
-      <span class="infra-sub-verb">[Capture]</span>
-    </div>
-    <div class="infra-sub-child">
-      <span class="infra-sub-arrow">&rarr;</span>
-      <span class="infra-sub-verb">URL [Digital Projects]</span>
-    </div>
-    <div class="infra-sub-child">
-      <span class="infra-sub-arrow">&rarr;</span>
-      <span class="infra-sub-verb">IRL [Experiential Programs]</span>
-    </div>
-  </div>
+<section class="grid-section">
+  <ul class="grid" id="artifact-grid"></ul>
+  <div class="empty" id="empty-state" hidden><p>No results</p></div>
 </section>
 
-<section class="systems-section">
-  <div class="systems-grid">
-    <div class="sys-card">
-      <span class="sys-card-verb">Discover</span>
-      <span class="sys-card-name">Radar</span>
-      <span class="sys-card-desc">Discover practitioners, venues, and opportunities. The sensing layer — scanning for signals across the creative landscape.</span>
-    </div>
-    <div class="sys-card">
-      <span class="sys-card-verb">Connect</span>
-      <span class="sys-card-name">Profiles</span>
-      <span class="sys-card-desc">Contracted profiles, relationships, and IP. The network layer — linking talent with organizations and opportunities.</span>
-    </div>
-    <div class="sys-card">
-      <span class="sys-card-verb">Locate</span>
-      <span class="sys-card-name">Atlas</span>
-      <span class="sys-card-desc">Physical venues and their capabilities. The spatial network — every location indexed with context and capacity.</span>
-    </div>
-    <div class="sys-card">
-      <span class="sys-card-verb">Archive</span>
-      <span class="sys-card-name">Index</span>
-      <span class="sys-card-desc">Work + projects + programs, indexed with full provenance. Contains Artifacts [Objects] and Worlds [Capture] — URL [Digital Projects] + IRL [Experiential Programs].</span>
-    </div>
-  </div>
-</section>
-
-<section class="schema-section">
-  <div class="schema-label">Shared Schema</div>
-  <div class="schema-grid">
-    <div class="schema-field"><span class="sf-name">Book</span><span class="sf-type">Radar / Profiles / Atlas / Index</span></div>
-    <div class="schema-field"><span class="sf-name">Cover</span><span class="sf-type">Image</span></div>
-    <div class="schema-field"><span class="sf-name">Title</span><span class="sf-type">Text</span></div>
-    <div class="schema-field"><span class="sf-name">Authors</span><span class="sf-type">Relation &rarr; Profiles</span></div>
-    <div class="schema-field"><span class="sf-name">Description</span><span class="sf-type">Long text</span></div>
-    <div class="schema-field"><span class="sf-name">Medium</span><span class="sf-type">Object / Spatial / Digital / Performance / Protocol / Interface / Documentation / Environmental</span></div>
-    <div class="schema-field"><span class="sf-name">Mode</span><span class="sf-type">WHITEBOX / BLACKBOX / Both</span></div>
-    <div class="schema-field"><span class="sf-name">Entity</span><span class="sf-type">Studio Artifice / Artifice NYC / Both</span></div>
-    <div class="schema-field"><span class="sf-name">Status</span><span class="sf-type">Draft &rarr; In Review &rarr; Published &rarr; Archived</span></div>
-    <div class="schema-field"><span class="sf-name">Tags</span><span class="sf-type">Multi-select</span></div>
-    <div class="schema-field"><span class="sf-name">Date Added</span><span class="sf-type">Date</span></div>
-    <div class="schema-field"><span class="sf-name">Location</span><span class="sf-type">Where it exists / was produced</span></div>
-    <div class="schema-field"><span class="sf-name">Source</span><span class="sf-type">Provenance</span></div>
-    <div class="schema-field"><span class="sf-name">Relations</span><span class="sf-type">Cross-book links</span></div>
-  </div>
-</section>
-
-<section class="entities-section">
-  <div class="entities-label">Entities</div>
-  <div class="entities-grid">
-    <div class="ent-card">
-      <span class="ent-name">Studio Artifice LLC</span>
-      <span class="ent-type">Brand House</span>
-      <span class="ent-desc">Client work in brand, identity, and product design funds the infrastructure, the nonprofit, the network, the programming, the Index.</span>
-    </div>
-    <div class="ent-card">
-      <span class="ent-name">Artifice 501(c)(3)</span>
-      <span class="ent-type">Nonprofit</span>
-      <span class="ent-desc">Governance, institutional memory, and the cultural mandate. Steward of the ethical framework.</span>
-    </div>
-    <div class="ent-card">
-      <span class="ent-name">Chapters</span>
-      <span class="ent-type">Cultural Engine</span>
-      <span class="ent-desc">Art and technology activations. WhiteBox and BlackBox programming — process-visible research and experiential performance.</span>
-    </div>
-  </div>
+<section class="submit-section" id="submit">
+  <p class="submit-label">Submit an artifact to the Index</p>
+  <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn">Submit Artifact</a>
 </section>
 
 <footer class="footer">
-  <span class="footer-text">Artifice &middot; New York &middot; 2024&ndash;Ongoing</span>
+  <span class="footer-text">Studio Artifice LLC &middot; Artifice NYC &middot; 2024&ndash;Ongoing</span>
   <div class="footer-links">
-    <a href="https://index.artificenyc.org">Artifact Index</a>
+    <a href="https://es.artificenyc.org">Ecosystem</a>
     <a href="https://www.instagram.com/artifice.nyc/" target="_blank" rel="noopener">Instagram</a>
     <a href="mailto:info@artificenyc.org">Email</a>
   </div>
 </footer>
 
+<script src="app.js"></script>
 </body>
 </html>
