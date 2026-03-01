@@ -131,19 +131,28 @@
     .card-link:hover .card-img { opacity: 0.7; }
     .card-overlay {
       position: absolute; inset: 0;
-      display: flex; justify-content: center; align-items: center;
-      background: rgba(0,0,0,0.5);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      gap: 6px; padding: 15%;
+      background: rgba(0,0,0,0.55);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       border-radius: 50%;
       opacity: 0; transition: opacity 0.2s;
     }
     .card-link:hover .card-overlay { opacity: 1; }
-    .overlay-icon { height: 50%; width: auto; object-fit: contain; opacity: 0.9; }
-    .card-overlay .mode-icons-stack { gap: 8px; }
-    .card-overlay-line {
-      font-family: var(--mono); font-size: 10px;
-      text-transform: uppercase; color: var(--text-2);
+    .overlay-title {
+      font-family: var(--sans); font-size: 14px; font-weight: 400;
+      color: var(--text); text-align: center; line-height: 1.25;
+      max-width: 100%; overflow: hidden;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     }
+    .overlay-meta {
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-2); text-align: center;
+    }
+    .overlay-mode { display: flex; justify-content: center; align-items: center; gap: 6px; }
+    .overlay-icon { height: 20px; width: auto; object-fit: contain; opacity: 0.85; }
+    .card-overlay .mode-icons-stack { flex-direction: row; gap: 6px; }
     .mode-icon { height: 12px; width: auto; display: inline-block; vertical-align: middle; object-fit: contain; }
     .mode-icons-stack { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 
@@ -163,6 +172,7 @@
       display: flex; align-items: center; gap: 6px;
     }
     .card-meta-text { white-space: nowrap; }
+    .card-meta-text + .card-meta-text::before { content: '·'; margin-right: 6px; }
 
     /* ---- Submit ---- */
     .submit-section {

@@ -69,13 +69,15 @@
           '<div class="card-img-wrap">' +
             '<img class="card-img" src="' + esc(a.thumb) + '" alt="' + esc(a.title) + '" loading="lazy">' +
             '<div class="card-overlay">' +
-              overlayIcon(a.mode) +
+              '<span class="overlay-title">[' + esc(a.title) + ']</span>' +
+              '<span class="overlay-meta">' + esc(typeLabel) + ' · ' + esc(entityLabel) + '</span>' +
+              '<span class="overlay-mode">' + overlayIcon(a.mode) + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="card-body">' +
             '<span class="card-code">' + esc(a.code) + '</span>' +
             '<div class="card-title">' + esc(a.title) + '</div>' +
-            '<div class="card-meta">' + modeIcons(a.mode) + ' <span class="card-meta-text">' + esc(typeLabel) + ' · ' + esc(entityLabel) + '</span></div>' +
+            '<div class="card-meta">' + modeIcons(a.mode) + ' <span class="card-meta-text">' + esc(typeLabel) + '</span><span class="card-meta-text">' + esc(entityLabel) + '</span></div>' +
           '</div>' +
         '</div>';
       $grid.appendChild(li);
