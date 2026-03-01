@@ -69,7 +69,7 @@
       display: flex; align-items: center; gap: 8px;
     }
     .header-logo:hover { color: var(--text-2); }
-    .header-logo-img { width: 20px; height: 20px; display: block; }
+    .header-logo-img { width: 36px; height: 36px; display: block; }
     .header-count {
       font-family: var(--mono); font-size: 9px;
       color: var(--text-3);
@@ -147,8 +147,9 @@
       font-family: var(--mono); font-size: 10px;
       text-transform: uppercase;
     }
-    .mode-icon { height: 14px; width: auto; display: inline-block; vertical-align: middle; object-fit: contain; }
-    .card-overlay .mode-icon { height: 20px; width: auto; }
+    .mode-icon { height: 12px; width: auto; display: inline-block; vertical-align: middle; object-fit: contain; }
+    .card-overlay .mode-icon { height: 28px; width: auto; }
+    .mode-icons-stack { display: flex; flex-direction: column; align-items: center; gap: 4px; }
     .card-overlay-mode--wb { color: var(--wb); }
     .card-overlay-mode--bb { color: var(--bb); }
     .card-overlay-mode--both { color: var(--both); }
@@ -265,7 +266,7 @@
 
 <header class="header">
   <div class="header-left">
-    <a href="/" class="header-logo"><img src="logo.png" alt="Artifice" class="header-logo-img"> Artifice</a>
+    <a href="/" class="header-logo"><img src="logo.png" alt="Artifice" class="header-logo-img"></a>
     <span class="header-count" id="grid-count"></span>
   </div>
   <nav class="header-nav">

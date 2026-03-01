@@ -71,7 +71,7 @@
   function modeIcons(mode) {
     if (mode === 'WHITEBOX') return '<img src="wb-icon.png" class="mode-icon" alt="WHITEBOX">';
     if (mode === 'BLACKBOX') return '<img src="bb-icon.png" class="mode-icon" alt="BLACKBOX">';
-    return '<img src="wb-icon.png" class="mode-icon" alt="WHITEBOX"> <img src="bb-icon.png" class="mode-icon" alt="BLACKBOX">';
+    return '<span class="mode-icons-stack"><img src="wb-icon.png" class="mode-icon" alt="WHITEBOX"><img src="bb-icon.png" class="mode-icon" alt="BLACKBOX"></span>';
   }
 
   function getFiltered() {
