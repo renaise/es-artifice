@@ -50,6 +50,12 @@
     environmental: 'Environmental',
   };
 
+  var entityLabels = {
+    'Artifice NYC': 'IRL',
+    'Studio Artifice': 'URL',
+    'Both': 'IRL+URL',
+  };
+
   var currentQuery = '';
   var $grid = document.getElementById('artifact-grid');
   var $count = document.getElementById('grid-count');
@@ -93,20 +99,21 @@
       var li = document.createElement('li');
       li.className = 'card';
       var typeLabel = typeLabels[a.type] || a.type;
+      var entityLabel = entityLabels[a.entity] || a.entity;
       li.innerHTML =
         '<div class="card-link">' +
           '<div class="card-img-wrap">' +
             '<img class="card-img" src="' + esc(a.thumb) + '" alt="' + esc(a.title) + '" loading="lazy">' +
             '<div class="card-overlay">' +
-              '<span class="card-overlay-line">' + esc(typeLabel) + '</span>' +
               '<span class="card-overlay-mode card-overlay-mode--' + (a.mode === 'WHITEBOX' ? 'wb' : a.mode === 'BLACKBOX' ? 'bb' : 'both') + '">' + modeIcons(a.mode) + '</span>' +
-              '<span class="card-overlay-line">' + esc(a.entity) + '</span>' +
+              '<span class="card-overlay-title">[' + esc(a.title) + ']</span>' +
+              '<span class="card-overlay-line">' + esc(typeLabel) + ' · ' + esc(entityLabel) + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="card-body">' +
             '<span class="card-code">' + esc(a.code) + '</span>' +
             '<div class="card-title">' + esc(a.title) + '</div>' +
-            '<div class="card-meta">' + esc(typeLabel) + ' ' + modeIcons(a.mode) + '</div>' +
+            '<div class="card-meta">' + esc(typeLabel) + ' · ' + esc(entityLabel) + ' ' + modeIcons(a.mode) + '</div>' +
           '</div>' +
         '</div>';
       $grid.appendChild(li);
