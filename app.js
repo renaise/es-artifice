@@ -126,5 +126,81 @@
     });
   });
 
+  // IG Import
+  var WORKER_URL = 'https://artifice-ig-import.developer-fec.workers.dev';
+  var $igUrl = document.getElementById('ig-url');
+  var $igFetch = document.getElementById('ig-fetch');
+  var $igStatus = document.getElementById('ig-status');
+  var $submitForm = document.getElementById('submit-form');
+  var $submitThumb = document.getElementById('submit-thumb');
+
+  if ($igFetch) {
+    $igFetch.addEventListener('click', function () {
+      var url = ($igUrl.value || '').trim();
+      if (!url || !url.includes('instagram.com')) {
+        $igStatus.textContent = 'Please paste a valid Instagram URL';
+        return;
+      }
+      $igStatus.textContent = 'Fetching...';
+      $igFetch.disabled = true;
+      fetch(WORKER_URL + '?url=' + encodeURIComponent(url))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.error) {
+            $igStatus.textContent = 'Error: ' + data.error;
+            $igFetch.disabled = false;
+            return;
+          }
+          var s = data.schema;
+          document.getElementById('sf-title').value = s.title || '';
+          document.getElementById('sf-desc').value = s.description || '';
+          document.getElementById('sf-authors').value = s.authors || '';
+          document.getElementById('sf-tags').value = (s.tags || []).join(', ');
+          if (s.cover) { $submitThumb.src = s.cover; $submitThumb.hidden = false; }
+          $submitForm.hidden = false;
+          $igStatus.textContent = 'Imported — fill in Mode, Medium, and Entity below.';
+          $igFetch.disabled = false;
+        })
+        .catch(function (err) {
+          $igStatus.textContent = 'Failed: ' + err.message;
+          $igFetch.disabled = false;
+        });
+    });
+  }
+
+  if ($submitForm) {
+    $submitForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var medium = document.getElementById('sf-medium').value;
+      var mode = document.getElementById('sf-mode').value;
+      var entity = document.getElementById('sf-entity').value;
+      if (!medium || !mode || !entity) {
+        $igStatus.textContent = 'Please select Medium, Mode, and Entity.';
+        return;
+      }
+      var newArtifact = {
+        id: Date.now().toString(),
+        code: 'A' + (ARTIFACTS.length + 1),
+        type: medium.toLowerCase(),
+        title: document.getElementById('sf-title').value,
+        entity: entity,
+        mode: mode,
+        source: 'Instagram',
+        thumb: $submitThumb.src
+      };
+      ARTIFACTS.push(newArtifact);
+      activeTab = 'index';
+      document.querySelectorAll('.header-tab').forEach(function (t) {
+        t.classList.remove('header-tab--active');
+        if (t.textContent.trim() === 'Index') t.classList.add('header-tab--active');
+      });
+      render();
+      $submitForm.hidden = true;
+      $igUrl.value = '';
+      $igStatus.textContent = 'Added to Index as ' + newArtifact.code + '. (Session only — not persisted.)';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   render();
 })();
