@@ -225,29 +225,79 @@
 
     /* ---- Command Bar (floating bottom) ---- */
     .cmd-bar {
-      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-      z-index: 90; display: flex; align-items: center; gap: 8px;
-      padding: 6px 8px 6px 16px;
-      background: rgba(10,10,10,0.8);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 40px;
-      width: min(520px, calc(100vw - 32px));
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 90; display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px 10px 28px;
+      background: rgba(10,10,10,0.82);
+      backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 44px;
+      width: min(660px, calc(100vw - 40px));
+      box-shadow:
+        0 4px 32px rgba(0,0,0,0.5),
+        0 0 24px rgba(255,255,255,0.03),
+        0 0 60px rgba(255,255,255,0.02);
+      transition: box-shadow 0.2s, width 0.25s;
+    }
+    .cmd-bar.active {
+      box-shadow:
+        0 4px 32px rgba(0,0,0,0.5),
+        0 0 32px rgba(255,255,255,0.06),
+        0 0 80px rgba(255,255,255,0.03);
     }
     .cmd-search {
-      flex: 1; min-width: 0; height: 32px; padding: 0 8px;
-      font-family: var(--mono); font-size: 11px;
+      flex: 1; min-width: 0; height: 42px; padding: 0 10px;
+      font-family: var(--mono); font-size: 14px;
       color: var(--text); background: transparent; border: none; outline: none;
     }
-    .cmd-search::placeholder { color: rgba(255,255,255,0.35); }
-    .cmd-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.12); flex-shrink: 0; }
+    .cmd-search::placeholder { color: rgba(255,255,255,0.3); }
+    .cmd-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
     .cmd-submit-btn {
-      display: flex; align-items: center; gap: 5px;
-      font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: var(--bg); background: var(--text); border: none;
-      padding: 6px 14px; border-radius: 20px; cursor: pointer;
+      padding: 10px 20px; border-radius: 28px; cursor: pointer;
       white-space: nowrap; flex-shrink: 0;
     }
     .cmd-submit-btn:hover { background: var(--text-2); }
+    .cmd-submit-btn svg { width: 10px; height: 10px; }
+
+    /* Query results box */
+    .cmd-query-box {
+      position: fixed; bottom: 82px; left: 50%; transform: translateX(-50%);
+      z-index: 89; width: min(660px, calc(100vw - 40px));
+      background: rgba(12,12,12,0.94);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+      max-height: 320px; overflow-y: auto;
+      box-shadow: 0 -4px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255,255,255,0.02);
+      padding: 8px 0;
+    }
+    .cmd-query-box[hidden] { display: none; }
+    .cmd-query-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; cursor: pointer;
+      transition: background 0.1s;
+    }
+    .cmd-query-item:hover { background: rgba(255,255,255,0.04); }
+    .cmd-query-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .cmd-query-icon img { width: 14px; height: 14px; }
+    .cmd-query-text {
+      font-family: var(--sans); font-size: 13px; color: var(--text);
+    }
+    .cmd-query-meta {
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-3); margin-left: auto;
+    }
+    .cmd-query-empty {
+      padding: 20px; text-align: center;
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; color: var(--text-3);
+    }
 
     /* ---- Submit Panel ---- */
     .submit-panel {
@@ -576,12 +626,15 @@
   </div>
 </section>
 
+<!-- Query results box -->
+<div class="cmd-query-box" id="cmd-query-box" hidden></div>
+
 <!-- Floating command bar -->
 <div class="cmd-bar" id="cmd-bar">
-  <input type="search" class="cmd-search" id="search-input" placeholder="Search the Index..." autocomplete="off">
+  <input type="search" class="cmd-search" id="search-input" placeholder="Search the Index ..." autocomplete="off">
   <div class="cmd-divider"></div>
   <button class="cmd-submit-btn" id="cmd-submit-toggle">
-    <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 1v6H2v2h6v6h2V9h6V7H10V1z"/></svg>
+    <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor"><path d="M8 1v6H2v2h6v6h2V9h6V7H10V1z"/></svg>
     Submit
   </button>
 </div>
@@ -635,6 +688,64 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+(function() {
+  var input = document.getElementById('search-input');
+  var bar = document.getElementById('cmd-bar');
+  var box = document.getElementById('cmd-query-box');
+  if (!input || !box || !bar) return;
+
+  function getItems() {
+    var cards = document.querySelectorAll('.card');
+    var items = [];
+    cards.forEach(function(c) {
+      var title = c.querySelector('.card-title');
+      var meta = c.querySelector('.card-meta');
+      var mode = c.querySelector('.mode-icon');
+      if (title) {
+        items.push({
+          title: title.textContent,
+          meta: meta ? meta.textContent.trim() : '',
+          mode: mode ? (mode.alt || '') : ''
+        });
+      }
+    });
+    return items;
+  }
+
+  function renderQuery(q) {
+    if (!q.trim()) { box.hidden = true; bar.classList.remove('active'); return; }
+    var items = getItems();
+    var matches = items.filter(function(it) {
+      return it.title.toLowerCase().includes(q.toLowerCase()) || it.meta.toLowerCase().includes(q.toLowerCase());
+    }).slice(0, 8);
+
+    bar.classList.add('active');
+    if (matches.length === 0) {
+      box.innerHTML = '<div class="cmd-query-empty">No results for "' + q + '"</div>';
+      box.hidden = false;
+      return;
+    }
+    box.innerHTML = matches.map(function(m) {
+      var iconSrc = m.mode.includes('WHITE') ? 'wb-icon.png' : 'bb-icon.png';
+      return '<div class="cmd-query-item">' +
+        '<div class="cmd-query-icon"><img src="' + iconSrc + '" alt=""></div>' +
+        '<span class="cmd-query-text">' + m.title + '</span>' +
+        '<span class="cmd-query-meta">' + m.meta.split('·')[0].trim() + '</span>' +
+      '</div>';
+    }).join('');
+    box.hidden = false;
+  }
+
+  input.addEventListener('input', function() { renderQuery(input.value); });
+  input.addEventListener('focus', function() { if (input.value.trim()) renderQuery(input.value); });
+  document.addEventListener('click', function(e) {
+    if (!bar.contains(e.target) && !box.contains(e.target)) {
+      box.hidden = true; bar.classList.remove('active');
+    }
+  });
+})();
+</script>
 </body>
 </html>
 
