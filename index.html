@@ -393,6 +393,32 @@
     }
     .submit-field-row { display: flex; gap: 10px; }
     .submit-field-row .submit-field { flex: 1; }
+    /* Tag chips */
+    .tag-input-wrap {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      padding: 6px 8px; min-height: 38px;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+    }
+    .tag-input-wrap:focus-within { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); }
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px; background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 3px;
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.03em; color: var(--text);
+    }
+    .tag-chip-x {
+      cursor: pointer; color: var(--text-3); font-size: 12px;
+      line-height: 1; margin-left: 2px;
+    }
+    .tag-chip-x:hover { color: var(--text); }
+    .tag-input {
+      flex: 1; min-width: 80px; border: none; outline: none;
+      background: transparent; color: var(--text);
+      font-family: var(--mono); font-size: 11px; padding: 2px 0;
+    }
+    .tag-input::placeholder { color: var(--text-3); }
+
     .submit-form-actions { display: flex; gap: 10px; margin-top: 16px; }
     .submit-btn {
       display: inline-flex; align-items: center; justify-content: center;
@@ -702,14 +728,19 @@
           <label class="submit-field"><span>Entity</span>
             <select id="sf-entity"><option value="">Select...</option><option>Studio Artifice</option><option>Artifice NYC</option></select>
           </label>
-          <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
+          <div class="submit-field"><span>Tags</span>
+            <div class="tag-input-wrap" id="tag-wrap">
+              <input type="text" class="tag-input" id="sf-tags-input" placeholder="Type and press Enter">
+            </div>
+            <input type="hidden" id="sf-tags">
+          </div>
         </div>
 
         <label class="submit-field"><span>Source URL (optional)</span><input type="url" id="sf-source" placeholder="Instagram, Are.na, website..."></label>
       </div>
 
       <div class="submit-form-actions">
-        <button type="submit" class="submit-btn submit-btn--primary">Add to Index</button>
+        <button type="submit" class="submit-btn submit-btn--primary">Submit to Index</button>
         <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn submit-btn--alt">Email Instead</a>
       </div>
     </form>
@@ -726,6 +757,45 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+// Tag input
+(function() {
+  var wrap = document.getElementById('tag-wrap');
+  var input = document.getElementById('sf-tags-input');
+  var hidden = document.getElementById('sf-tags');
+  if (!wrap || !input) return;
+  var tags = [];
+
+  function render() {
+    wrap.querySelectorAll('.tag-chip').forEach(function(c) { c.remove(); });
+    tags.forEach(function(t, i) {
+      var chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.innerHTML = t + '<span class="tag-chip-x" data-i="' + i + '">&times;</span>';
+      wrap.insertBefore(chip, input);
+    });
+    if (hidden) hidden.value = tags.join(',');
+  }
+
+  input.addEventListener('keydown', function(e) {
+    if ((e.key === 'Enter' || e.key === ',') && input.value.trim()) {
+      e.preventDefault();
+      var val = input.value.trim().replace(/,$/,'');
+      if (val && tags.indexOf(val) === -1) { tags.push(val); input.value = ''; render(); }
+    }
+    if (e.key === 'Backspace' && !input.value && tags.length) {
+      tags.pop(); render();
+    }
+  });
+
+  wrap.addEventListener('click', function(e) {
+    if (e.target.classList.contains('tag-chip-x')) {
+      tags.splice(parseInt(e.target.dataset.i), 1); render();
+    }
+    input.focus();
+  });
+})();
+</script>
 <script>
 // Dropzone
 (function() {
