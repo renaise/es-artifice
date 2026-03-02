@@ -1022,7 +1022,7 @@
       return;
     }
     box.innerHTML = matches.map(function(m) {
-      var iconSrc = m.mode.includes('WHITE') ? 'wb-icon.png' : 'bb-icon.png';
+      var iconSrc = m.mode.includes('WHITE') ? 'whitebox-icon.png' : 'blackbox-icon.png';
       return '<div class="cmd-query-item">' +
         '<div class="cmd-query-icon"><img src="' + iconSrc + '" alt=""></div>' +
         '<span class="cmd-query-text">' + m.title + '</span>' +
