@@ -188,30 +188,75 @@
   });
 
   // Tab switching
+  var $aboutSection = document.getElementById('about');
+  var $gridSection = document.querySelector('.grid-section');
+  var $cmdBar = document.getElementById('cmd-bar');
+
+  function switchTab(tabName) {
+    activeTab = tabName;
+    currentQuery = '';
+    $search.value = '';
+    document.querySelectorAll('.header-tab').forEach(function (t) {
+      t.classList.remove('header-tab--active');
+    });
+    // Hide all sections first
+    $mapSection.hidden = true;
+    $toggleBar.hidden = true;
+    $aboutSection.hidden = true;
+    $gridSection.style.display = '';
+    $cmdBar.style.display = '';
+
+    if (tabName === 'atlas') {
+      $mapSection.hidden = false;
+      $toggleBar.hidden = false;
+      $cmdBar.style.display = 'none';
+      setTimeout(function () { initMap(); atlasMap.invalidateSize(); }, 100);
+    } else if (tabName === 'about') {
+      $aboutSection.hidden = false;
+      $gridSection.style.display = 'none';
+      $cmdBar.style.display = 'none';
+    }
+    render();
+  }
+
   document.querySelectorAll('.header-tab').forEach(function (tab) {
     tab.addEventListener('click', function (e) {
       e.preventDefault();
-      var tabName = tab.textContent.trim().toLowerCase();
-      if (tabName === 'atlas' || tabName === 'index') {
-        activeTab = tabName;
-        currentQuery = '';
-        $search.value = '';
-        document.querySelectorAll('.header-tab').forEach(function (t) {
-          t.classList.remove('header-tab--active');
-        });
+      var raw = tab.textContent.trim().toLowerCase().replace(/\s.*/, '');
+      if (raw === 'atlas' || raw === 'index' || raw === 'about') {
         tab.classList.add('header-tab--active');
-        if (tabName === 'atlas') {
-          $mapSection.hidden = false;
-          $toggleBar.hidden = false;
-          setTimeout(function () { initMap(); atlasMap.invalidateSize(); }, 100);
-        } else {
-          $mapSection.hidden = true;
-          $toggleBar.hidden = true;
-        }
-        render();
+        switchTab(raw);
       }
     });
   });
+
+  // About CTA → open submit panel
+  var $aboutCta = document.getElementById('about-submit-cta');
+  if ($aboutCta) {
+    $aboutCta.addEventListener('click', function () {
+      switchTab('index');
+      document.querySelectorAll('.header-tab').forEach(function (t) {
+        if (t.textContent.trim() === 'Index') t.classList.add('header-tab--active');
+      });
+      var $panel = document.getElementById('submit-panel');
+      if ($panel) $panel.hidden = false;
+    });
+  }
+
+  // Submit panel toggle
+  var $submitToggle = document.getElementById('cmd-submit-toggle');
+  var $submitPanel = document.getElementById('submit-panel');
+  var $submitClose = document.getElementById('submit-panel-close');
+  if ($submitToggle && $submitPanel) {
+    $submitToggle.addEventListener('click', function () {
+      $submitPanel.hidden = !$submitPanel.hidden;
+    });
+  }
+  if ($submitClose && $submitPanel) {
+    $submitClose.addEventListener('click', function () {
+      $submitPanel.hidden = true;
+    });
+  }
 
   // IG Import
   var WORKER_URL = 'https://artifice-ig-import.developer-fec.workers.dev';

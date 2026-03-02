@@ -89,7 +89,7 @@
     }
     .header-tab:hover { color: var(--text-2); }
     .header-tab--active { color: var(--text); border-bottom-color: var(--text); }
-    .header-tab--locked { cursor: default; opacity: 0.4; }
+    .header-tab--locked { cursor: default; opacity: 0.65; }
     .header-tab--locked:hover { color: var(--text-3); }
     .lock-icon { width: 9px; height: 9px; fill: currentColor; vertical-align: middle; margin-left: 2px; margin-top: -1px; }
 
@@ -223,25 +223,56 @@
     .card-meta-text { white-space: nowrap; }
     .card-meta-text + .card-meta-text::before { content: '·'; margin-right: 6px; }
 
-    /* ---- Submit ---- */
-    .submit-section {
-      padding: 48px 24px; border-top: 1px solid var(--border);
-      text-align: center;
+    /* ---- Command Bar (floating bottom) ---- */
+    .cmd-bar {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 90; display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px 6px 16px;
+      background: rgba(10,10,10,0.8);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 40px;
+      width: min(520px, calc(100vw - 32px));
     }
-    .submit-label {
-      font-family: var(--mono); font-size: 10px;
-      text-transform: uppercase; color: var(--text-3);
+    .cmd-search {
+      flex: 1; min-width: 0; height: 32px; padding: 0 8px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text); background: transparent; border: none; outline: none;
+    }
+    .cmd-search::placeholder { color: rgba(255,255,255,0.35); }
+    .cmd-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.12); flex-shrink: 0; }
+    .cmd-submit-btn {
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+      color: var(--bg); background: var(--text); border: none;
+      padding: 6px 14px; border-radius: 20px; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .cmd-submit-btn:hover { background: var(--text-2); }
+
+    /* ---- Submit Panel ---- */
+    .submit-panel {
+      position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
+      z-index: 91; width: min(520px, calc(100vw - 32px));
+      background: rgba(15,15,15,0.92);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      max-height: 70vh; overflow-y: auto;
+    }
+    .submit-panel[hidden] { display: none; }
+    .submit-panel-inner { padding: 16px; }
+    .submit-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 12px;
     }
-    .submit-btn {
-      display: inline-block; padding: 10px 24px;
+    .submit-panel-title {
       font-family: var(--mono); font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--text); background: transparent;
-      border: 1px solid var(--border); text-decoration: none;
+      text-transform: uppercase; color: var(--text-2);
     }
-    .submit-btn:hover { border-color: var(--text-3); background: var(--surface); cursor: pointer; }
-    .submit-ig { max-width: 560px; margin: 0 auto 16px; }
+    .submit-panel-close {
+      background: none; border: none; color: var(--text-3);
+      font-size: 18px; cursor: pointer; padding: 0 4px;
+    }
+    .submit-panel-close:hover { color: var(--text); }
     .submit-ig-input-wrap { display: flex; gap: 8px; margin-bottom: 12px; }
     .submit-ig-input {
       flex: 1; height: 32px; padding: 0 10px;
@@ -256,10 +287,10 @@
       padding: 0 16px; cursor: pointer; white-space: nowrap;
     }
     .submit-ig-btn:hover { background: var(--text-2); }
-    .submit-form { text-align: left; margin-top: 16px; }
-    .submit-form-row { display: flex; gap: 16px; margin-bottom: 12px; }
-    .submit-thumb { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
-    .submit-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .submit-form { text-align: left; margin-top: 12px; }
+    .submit-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+    .submit-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
+    .submit-fields { flex: 1; display: flex; flex-direction: column; gap: 6px; }
     .submit-field { display: flex; flex-direction: column; gap: 2px; }
     .submit-field span {
       font-family: var(--mono); font-size: 9px;
@@ -275,14 +306,97 @@
     }
     .submit-field-row { display: flex; gap: 8px; }
     .submit-field-row .submit-field { flex: 1; }
-    .submit-or {
-      font-family: var(--mono); font-size: 9px;
-      color: var(--text-3); text-transform: uppercase; margin: 12px 0;
+    .submit-form-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .submit-btn {
+      display: inline-block; padding: 8px 20px;
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--bg); background: var(--text);
+      border: none; text-decoration: none; cursor: pointer;
     }
+    .submit-btn:hover { background: var(--text-2); }
+    .submit-btn--alt {
+      color: var(--text); background: transparent;
+      border: 1px solid var(--border);
+    }
+    .submit-btn--alt:hover { border-color: var(--text-3); background: var(--surface); }
     .submit-ig-status {
       font-family: var(--mono); font-size: 9px;
       color: var(--text-2); margin-top: 8px;
     }
+
+    /* ---- About Section ---- */
+    .about-section { padding: 60px 24px; border-top: 1px solid var(--border); }
+    .about-section[hidden] { display: none; }
+    .about-inner { max-width: 800px; margin: 0 auto; }
+    .about-title {
+      font-family: var(--sans); font-size: 28px; font-weight: 300;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .about-desc {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text-2); line-height: 1.6; margin-bottom: 32px;
+    }
+    .about-pipeline {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 32px; flex-wrap: wrap;
+    }
+    .about-book {
+      flex: 1; min-width: 140px;
+      border: 1px solid var(--border); padding: 16px;
+    }
+    .about-book-label {
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-3);
+      display: block; margin-bottom: 4px;
+    }
+    .about-book strong {
+      font-family: var(--sans); font-size: 16px; font-weight: 400;
+      color: var(--text); display: block; margin-bottom: 6px;
+    }
+    .about-book p {
+      font-family: var(--mono); font-size: 9px;
+      color: var(--text-3); line-height: 1.5;
+    }
+    .about-arrow {
+      font-size: 18px; color: var(--text-3);
+      padding-top: 28px; flex-shrink: 0;
+    }
+    .about-schema { margin-bottom: 32px; }
+    .about-schema-label {
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 12px;
+    }
+    .about-schema-grid {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .about-schema-grid span {
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; color: var(--text-2);
+      border: 1px solid var(--border); padding: 4px 10px;
+    }
+    .about-modes {
+      display: flex; gap: 24px; margin-top: 20px;
+    }
+    .about-mode {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .about-mode-icon { height: 20px; width: auto; opacity: 0.8; }
+    .about-mode span {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; color: var(--text);
+    }
+    .about-mode-desc {
+      font-size: 9px !important; color: var(--text-3) !important;
+    }
+    .about-cta {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--bg); background: var(--text);
+      border: none; padding: 10px 24px; cursor: pointer;
+    }
+    .about-cta:hover { background: var(--text-2); }
 
     /* ---- Footer ---- */
     .footer {
@@ -382,6 +496,7 @@
     <a href="#" class="header-tab header-tab--locked">Profiles <svg class="lock-icon" viewBox="0 0 16 16"><path d="M8 1a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V4a3 3 0 0 0-3-3zm-1.5 3a1.5 1.5 0 1 1 3 0v2h-3V4z"/></svg></a>
     <a href="#" class="header-tab">Atlas</a>
     <a href="#" class="header-tab header-tab--active">Index</a>
+    <a href="#" class="header-tab">About</a>
   </nav>
   <div class="header-right">
     <div class="view-toggle">
@@ -392,8 +507,6 @@
         <svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="3"/><rect x="1" y="6.5" width="14" height="3"/><rect x="1" y="12" width="14" height="3"/></svg>
       </button>
     </div>
-    <input type="search" class="header-search" id="search-input" placeholder="Search..." autocomplete="off">
-    <a href="#submit" class="header-cta">Submit</a>
   </div>
 </header>
 
@@ -420,17 +533,58 @@
   <div class="empty" id="empty-state" hidden><p>No results</p></div>
 </section>
 
-<section class="submit-section" id="submit">
-  <p class="submit-label">Submit an artifact to the Index</p>
-  <div class="submit-ig">
+<section class="about-section" id="about" hidden>
+  <div class="about-inner">
+    <h2 class="about-title">[ECO SYSTEM]</h2>
+    <p class="about-desc">A structured, relational dataset of creative process. The books are databases of a shared schema.</p>
+    <div class="about-pipeline">
+      <div class="about-book"><span class="about-book-label">Discover</span><strong>Radar</strong><p>Scanning for signals across the creative landscape.</p></div>
+      <span class="about-arrow">&rarr;</span>
+      <div class="about-book"><span class="about-book-label">Connect</span><strong>Profiles</strong><p>Contracted profiles, relationships, and IP.</p></div>
+      <span class="about-arrow">&rarr;</span>
+      <div class="about-book"><span class="about-book-label">Locate</span><strong>Atlas</strong><p>Physical venues and their capabilities. Every location indexed.</p></div>
+      <span class="about-arrow">&rarr;</span>
+      <div class="about-book"><span class="about-book-label">Archive</span><strong>Index</strong><p>Work + projects + programs, indexed with full provenance.</p></div>
+    </div>
+    <div class="about-schema">
+      <p class="about-schema-label">Shared Schema</p>
+      <div class="about-schema-grid">
+        <span>Book</span><span>Cover</span><span>Title</span><span>Authors</span><span>Description</span><span>Medium</span>
+        <span>Mode</span><span>Entity</span><span>Status</span><span>Tags</span><span>Date Added</span><span>Source</span>
+      </div>
+      <div class="about-modes">
+        <div class="about-mode"><img src="wb-overlay.png" class="about-mode-icon" alt=""><span>WHITEBOX</span><span class="about-mode-desc">Process-visible, research, educational</span></div>
+        <div class="about-mode"><img src="bb-overlay.png" class="about-mode-icon" alt=""><span>BLACKBOX</span><span class="about-mode-desc">Experiential, performative, non-reproducible</span></div>
+      </div>
+    </div>
+    <button class="about-cta" id="about-submit-cta">Submit an Artifact</button>
+  </div>
+</section>
+
+<!-- Floating command bar -->
+<div class="cmd-bar" id="cmd-bar">
+  <input type="search" class="cmd-search" id="search-input" placeholder="Search the Index..." autocomplete="off">
+  <div class="cmd-divider"></div>
+  <button class="cmd-submit-btn" id="cmd-submit-toggle">
+    <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 1v6H2v2h6v6h2V9h6V7H10V1z"/></svg>
+    Submit
+  </button>
+</div>
+
+<!-- Submit panel (slides up from cmd bar) -->
+<div class="submit-panel" id="submit-panel" hidden>
+  <div class="submit-panel-inner">
+    <div class="submit-panel-header">
+      <span class="submit-panel-title">Submit Artifact</span>
+      <button class="submit-panel-close" id="submit-panel-close">&times;</button>
+    </div>
     <div class="submit-ig-input-wrap">
       <input type="url" class="submit-ig-input" id="ig-url" placeholder="Paste Instagram URL..." autocomplete="off">
       <button class="submit-ig-btn" id="ig-fetch">Import</button>
     </div>
-    <div class="submit-ig-preview" id="ig-preview" hidden></div>
     <form class="submit-form" id="submit-form" hidden>
       <div class="submit-form-row">
-        <img class="submit-thumb" id="submit-thumb" src="" alt="">
+        <img class="submit-thumb" id="submit-thumb" src="" alt="" hidden>
         <div class="submit-fields">
           <label class="submit-field"><span>Title</span><input type="text" id="sf-title"></label>
           <label class="submit-field"><span>Description</span><textarea id="sf-desc" rows="2"></textarea></label>
@@ -449,13 +603,14 @@
           <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
         </div>
       </div>
-      <button type="submit" class="submit-btn">Add to Index</button>
+      <div class="submit-form-actions">
+        <button type="submit" class="submit-btn">Add to Index</button>
+        <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn submit-btn--alt">Email Instead</a>
+      </div>
     </form>
     <div class="submit-ig-status" id="ig-status"></div>
   </div>
-  <p class="submit-or">or</p>
-  <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn">Email Submission</a>
-</section>
+</div>
 
 <footer class="footer">
   <span class="footer-text">Studio Artifice LLC &middot; Artifice NYC &middot; 2024&ndash;Ongoing</span>
