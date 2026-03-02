@@ -340,26 +340,27 @@
     .submit-ig-btn:hover { background: var(--text-2); }
     .submit-form { text-align: left; margin-top: 0; }
     .submit-dropzone {
-      width: 100%; height: 140px; margin-bottom: 16px;
-      border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px;
+      width: 160px; height: 160px; margin: 0 auto 20px;
+      border: 1px dashed rgba(255,255,255,0.15); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; position: relative; overflow: hidden;
       transition: border-color 0.15s, background 0.15s;
     }
     .submit-dropzone:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.03); }
     .submit-dropzone.dragover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); }
-    .submit-dropzone.has-image { border-style: solid; border-color: rgba(255,255,255,0.1); }
+    .submit-dropzone.has-image { border-style: solid; border-color: rgba(255,255,255,0.08); }
     .submit-dropzone-prompt {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
       color: var(--text-3); pointer-events: none;
     }
     .submit-dropzone-prompt span {
-      font-family: var(--mono); font-size: 10px;
+      font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; letter-spacing: 0.04em;
+      text-align: center; line-height: 1.4;
     }
     .submit-preview {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; border-radius: 8px;
+      object-fit: cover; border-radius: 50%;
     }
     .submit-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
     .submit-fields { display: flex; flex-direction: column; gap: 12px; }
