@@ -175,13 +175,21 @@
 
   // Mode toggle (sticky bottom bar)
   var $toggleBar = document.getElementById('mode-toggle-bar');
-  document.querySelectorAll('.mode-toggle-btn').forEach(function (btn) {
+  var allToggleBtns = document.querySelectorAll('.mode-toggle-btn, .mode-toggle-btn-all');
+  allToggleBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
       activeFilter = btn.dataset.filter;
       document.querySelectorAll('.mode-toggle-btn').forEach(function (b) {
         b.classList.remove('mode-toggle-btn--active');
       });
-      btn.classList.add('mode-toggle-btn--active');
+      document.querySelectorAll('.mode-toggle-btn-all').forEach(function (b) {
+        b.classList.remove('mode-toggle-btn-all--active');
+      });
+      if (btn.classList.contains('mode-toggle-btn-all')) {
+        btn.classList.add('mode-toggle-btn-all--active');
+      } else {
+        btn.classList.add('mode-toggle-btn--active');
+      }
       if (atlasMap) renderMarkers();
       render();
     });

@@ -144,32 +144,40 @@
     .mode-toggle-bar {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       z-index: 100;
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 20px;
-      background: rgba(10,10,10,0.75);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      display: flex; align-items: center; gap: 0;
+      padding: 8px;
+      background: rgba(10,10,10,0.82);
+      backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 40px;
+      border-radius: 44px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.5), 0 0 24px rgba(255,255,255,0.03);
       transition: opacity 0.2s;
     }
     .mode-toggle-bar[hidden] { display: none; }
     .mode-toggle-btn {
-      background: none; border: 2px solid transparent; border-radius: 28px;
-      padding: 6px 14px; cursor: pointer;
+      background: none; border: 1px solid rgba(255,255,255,0.08); border-radius: 32px;
+      padding: 10px 24px; cursor: pointer;
       display: flex; align-items: center; gap: 8px;
       transition: all 0.15s;
-      opacity: 0.4;
+      opacity: 0.35;
     }
-    .mode-toggle-btn:hover { opacity: 0.7; }
-    .mode-toggle-btn--active { opacity: 1; border-color: rgba(255,255,255,0.3); }
-    .mode-toggle-btn img { height: 22px; width: auto; }
+    .mode-toggle-btn:hover { opacity: 0.6; }
+    .mode-toggle-btn--active { opacity: 1; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+    .mode-toggle-btn img { height: 28px; width: auto; }
     .mode-toggle-label {
-      font-family: var(--mono); font-size: 9px;
-      text-transform: uppercase; color: var(--text-2); letter-spacing: 0.04em;
+      font-family: var(--mono); font-size: 11px;
+      text-transform: uppercase; color: var(--text); letter-spacing: 0.04em;
     }
-    .mode-toggle-divider {
-      width: 1px; height: 24px; background: rgba(255,255,255,0.12);
+    .mode-toggle-btn-all {
+      background: none; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px;
+      padding: 8px 18px; cursor: pointer;
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--text-3);
+      transition: all 0.15s;
     }
+    .mode-toggle-btn-all:hover { color: var(--text-2); border-color: rgba(255,255,255,0.25); }
+    .mode-toggle-btn-all--active { color: var(--text); border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+    .mode-toggle-gap { width: 8px; flex-shrink: 0; }
     #atlas-map { border-radius: 4px; border: 1px solid var(--border); }
     .leaflet-container { background: #111; }
     .map-popup { font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
@@ -739,16 +747,15 @@
 </section>
 
 <div class="mode-toggle-bar" id="mode-toggle-bar" hidden>
-  <button class="mode-toggle-btn mode-toggle-btn--active" data-filter="all">
-    <span class="mode-toggle-label">All</span>
+  <button class="mode-toggle-btn-all mode-toggle-btn-all--active" data-filter="all">All</button>
+  <div class="mode-toggle-gap"></div>
+  <button class="mode-toggle-btn mode-toggle-btn--active" data-filter="WHITEBOX">
+    <img src="whitebox-icon.png" alt="WHITEBOX">
+    <span class="mode-toggle-label">Whitebox</span>
   </button>
-  <div class="mode-toggle-divider"></div>
-  <button class="mode-toggle-btn" data-filter="WHITEBOX">
-    <img src="wb-icon.png" alt="WHITEBOX">
-  </button>
-  <div class="mode-toggle-divider"></div>
   <button class="mode-toggle-btn" data-filter="BLACKBOX">
-    <img src="bb-icon.png" alt="BLACKBOX">
+    <img src="blackbox-icon.png" alt="BLACKBOX">
+    <span class="mode-toggle-label">Blackbox</span>
   </button>
 </div>
 
