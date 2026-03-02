@@ -173,14 +173,15 @@
     });
   }
 
-  // Filter buttons
-  document.querySelectorAll('.atlas-filter').forEach(function (btn) {
+  // Mode toggle (sticky bottom bar)
+  var $toggleBar = document.getElementById('mode-toggle-bar');
+  document.querySelectorAll('.mode-toggle-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       activeFilter = btn.dataset.filter;
-      document.querySelectorAll('.atlas-filter').forEach(function (b) {
-        b.classList.remove('atlas-filter--active');
+      document.querySelectorAll('.mode-toggle-btn').forEach(function (b) {
+        b.classList.remove('mode-toggle-btn--active');
       });
-      btn.classList.add('atlas-filter--active');
+      btn.classList.add('mode-toggle-btn--active');
       if (atlasMap) renderMarkers();
       render();
     });
@@ -201,9 +202,11 @@
         tab.classList.add('header-tab--active');
         if (tabName === 'atlas') {
           $mapSection.hidden = false;
+          $toggleBar.hidden = false;
           setTimeout(function () { initMap(); atlasMap.invalidateSize(); }, 100);
         } else {
           $mapSection.hidden = true;
+          $toggleBar.hidden = true;
         }
         render();
       }
