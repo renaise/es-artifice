@@ -578,17 +578,15 @@
       <span class="submit-panel-title">Submit Artifact</span>
       <button class="submit-panel-close" id="submit-panel-close">&times;</button>
     </div>
-    <div class="submit-ig-input-wrap">
-      <input type="url" class="submit-ig-input" id="ig-url" placeholder="Paste Instagram URL..." autocomplete="off">
-      <button class="submit-ig-btn" id="ig-fetch">Import</button>
-    </div>
+    <button class="submit-ig-btn" id="ig-fetch" style="width:100%;padding:10px;border-radius:4px;">New Artifact</button>
     <form class="submit-form" id="submit-form" hidden>
       <div class="submit-form-row">
         <img class="submit-thumb" id="submit-thumb" src="" alt="" hidden>
         <div class="submit-fields">
-          <label class="submit-field"><span>Title</span><input type="text" id="sf-title"></label>
+          <label class="submit-field"><span>Title</span><input type="text" id="sf-title" required></label>
+          <label class="submit-field"><span>Image URL</span><input type="url" id="sf-cover" placeholder="https://..."></label>
           <label class="submit-field"><span>Description</span><textarea id="sf-desc" rows="2"></textarea></label>
-          <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors" readonly></label>
+          <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors"></label>
           <div class="submit-field-row">
             <label class="submit-field"><span>Medium</span>
               <select id="sf-medium"><option value="">Select...</option><option>Object</option><option>Spatial</option><option>Digital</option><option>Performance</option><option>Protocol</option><option>Interface</option><option>Documentation</option><option>Environmental</option></select>
@@ -601,6 +599,7 @@
             </label>
           </div>
           <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
+          <label class="submit-field"><span>Source URL (optional)</span><input type="url" id="sf-source" placeholder="Instagram, Are.na, etc."></label>
         </div>
       </div>
       <div class="submit-form-actions">
