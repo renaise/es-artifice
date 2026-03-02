@@ -213,10 +213,22 @@
     .card-title {
       font-family: var(--sans); font-size: 14px; font-weight: 400;
       color: var(--text); line-height: 1.3; margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-title-inner {
+      display: inline-block; transition: none;
+    }
+    .card:hover .card-title { overflow: visible; }
+    .card:hover .card-title-inner.marquee {
+      animation: marquee 4s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
     }
     .card-meta {
       font-family: var(--mono); font-size: 9px;
-      color: var(--text-3); text-transform: uppercase;
+      color: var(--text-2); text-transform: uppercase;
       margin-top: 4px;
       display: flex; align-items: center; gap: 6px;
     }
@@ -419,6 +431,48 @@
     }
     .tag-input::placeholder { color: var(--text-3); }
 
+    /* Custom select */
+    .custom-select { position: relative; }
+    .custom-select-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 10px; background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border); cursor: pointer;
+      font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.03em; color: var(--text);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .custom-select-trigger:hover { border-color: rgba(255,255,255,0.2); }
+    .custom-select.open .custom-select-trigger { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); }
+    .custom-select-trigger svg { color: var(--text-3); flex-shrink: 0; }
+    .custom-select-value { color: var(--text-2); }
+    .custom-select.has-value .custom-select-value { color: var(--text); }
+    .custom-select-dropdown {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      z-index: 20; margin-top: 2px;
+      background: rgba(15,15,15,0.96);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+      max-height: 200px; overflow-y: auto;
+    }
+    .custom-select.open .custom-select-dropdown { display: block; }
+    .custom-select-option {
+      padding: 8px 12px; cursor: pointer;
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.03em; color: var(--text-2);
+      transition: background 0.1s, color 0.1s;
+    }
+    .custom-select-option:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+    .custom-select-option.selected { color: var(--text); background: rgba(255,255,255,0.04); }
+
+    /* Char counter */
+    .field-with-count { position: relative; }
+    .char-count {
+      position: absolute; bottom: 6px; right: 8px;
+      font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+      color: var(--text-3); pointer-events: none;
+    }
+    .char-count.over { color: #c44; }
+
     .submit-form-actions { display: flex; gap: 10px; margin-top: 16px; }
     .submit-btn {
       display: inline-flex; align-items: center; justify-content: center;
@@ -613,7 +667,6 @@
     <a href="#" class="header-tab header-tab--locked">Profiles <svg class="lock-icon" viewBox="0 0 16 16"><path d="M8 1a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1V4a3 3 0 0 0-3-3zm-1.5 3a1.5 1.5 0 1 1 3 0v2h-3V4z"/></svg></a>
     <a href="atlas.html" class="header-tab">Atlas</a>
     <a href="#" class="header-tab header-tab--active">Index</a>
-    <a href="about.html" class="header-tab">About</a>
   </nav>
   <div class="header-right">
     <div class="view-toggle">
@@ -624,6 +677,7 @@
         <svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="3"/><rect x="1" y="6.5" width="14" height="3"/><rect x="1" y="12" width="14" height="3"/></svg>
       </button>
     </div>
+    <a href="about.html" class="header-tab">About</a>
   </div>
 </header>
 
@@ -711,23 +765,45 @@
       </div>
 
       <div class="submit-fields">
-        <label class="submit-field"><span>Title</span><input type="text" id="sf-title" placeholder="Artifact name" required></label>
+        <label class="submit-field"><span>Title</span>
+          <div class="field-with-count">
+            <input type="text" id="sf-title" placeholder="Artifact name" required maxlength="100">
+            <span class="char-count" id="title-count">0/100</span>
+          </div>
+        </label>
         <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors" placeholder="Creator names"></label>
-        <label class="submit-field"><span>Description</span><textarea id="sf-desc" placeholder="What is this artifact?"></textarea></label>
+        <label class="submit-field"><span>Description</span>
+          <div class="field-with-count">
+            <textarea id="sf-desc" placeholder="What is this artifact?" maxlength="300"></textarea>
+            <span class="char-count" id="desc-count">0/300</span>
+          </div>
+        </label>
 
         <div class="submit-field-row">
-          <label class="submit-field"><span>Medium</span>
-            <select id="sf-medium"><option value="">Select...</option><option>Object</option><option>Spatial</option><option>Digital</option><option>Performance</option><option>Protocol</option><option>Interface</option><option>Documentation</option><option>Environmental</option></select>
-          </label>
-          <label class="submit-field"><span>Mode</span>
-            <select id="sf-mode"><option value="">Select...</option><option>WHITEBOX</option><option>BLACKBOX</option></select>
-          </label>
+          <div class="submit-field"><span>Medium</span>
+            <div class="custom-select" data-target="sf-medium" data-options="Object,Spatial,Digital,Performance,Protocol,Interface,Documentation,Environmental">
+              <div class="custom-select-trigger"><span class="custom-select-value">Select...</span><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M5 7L1 3h8z"/></svg></div>
+              <div class="custom-select-dropdown"></div>
+            </div>
+            <input type="hidden" id="sf-medium">
+          </div>
+          <div class="submit-field"><span>Mode</span>
+            <div class="custom-select" data-target="sf-mode" data-options="WHITEBOX,BLACKBOX">
+              <div class="custom-select-trigger"><span class="custom-select-value">Select...</span><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M5 7L1 3h8z"/></svg></div>
+              <div class="custom-select-dropdown"></div>
+            </div>
+            <input type="hidden" id="sf-mode">
+          </div>
         </div>
 
         <div class="submit-field-row">
-          <label class="submit-field"><span>Entity</span>
-            <select id="sf-entity"><option value="">Select...</option><option>Studio Artifice</option><option>Artifice NYC</option></select>
-          </label>
+          <div class="submit-field"><span>Entity</span>
+            <div class="custom-select" data-target="sf-entity" data-options="Studio Artifice,Artifice NYC">
+              <div class="custom-select-trigger"><span class="custom-select-value">Select...</span><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M5 7L1 3h8z"/></svg></div>
+              <div class="custom-select-dropdown"></div>
+            </div>
+            <input type="hidden" id="sf-entity">
+          </div>
           <div class="submit-field"><span>Tags</span>
             <div class="tag-input-wrap" id="tag-wrap">
               <input type="text" class="tag-input" id="sf-tags-input" placeholder="Type and press Enter">
@@ -757,6 +833,59 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+// Custom selects
+(function() {
+  document.querySelectorAll('.custom-select').forEach(function(sel) {
+    var trigger = sel.querySelector('.custom-select-trigger');
+    var dropdown = sel.querySelector('.custom-select-dropdown');
+    var valueEl = sel.querySelector('.custom-select-value');
+    var target = document.getElementById(sel.dataset.target);
+    var options = sel.dataset.options.split(',');
+
+    options.forEach(function(opt) {
+      var div = document.createElement('div');
+      div.className = 'custom-select-option';
+      div.textContent = opt;
+      div.addEventListener('click', function(e) {
+        e.stopPropagation();
+        valueEl.textContent = opt;
+        if (target) target.value = opt;
+        sel.classList.add('has-value');
+        sel.classList.remove('open');
+        dropdown.querySelectorAll('.selected').forEach(function(s) { s.classList.remove('selected'); });
+        div.classList.add('selected');
+      });
+      dropdown.appendChild(div);
+    });
+
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.querySelectorAll('.custom-select.open').forEach(function(s) { if (s !== sel) s.classList.remove('open'); });
+      sel.classList.toggle('open');
+    });
+  });
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.custom-select.open').forEach(function(s) { s.classList.remove('open'); });
+  });
+})();
+
+// Char counters
+(function() {
+  function bind(inputId, countId, max) {
+    var input = document.getElementById(inputId);
+    var counter = document.getElementById(countId);
+    if (!input || !counter) return;
+    input.addEventListener('input', function() {
+      var len = input.value.length;
+      counter.textContent = len + '/' + max;
+      counter.classList.toggle('over', len >= max);
+    });
+  }
+  bind('sf-title', 'title-count', 100);
+  bind('sf-desc', 'desc-count', 300);
+})();
+</script>
 <script>
 // Tag input
 (function() {
