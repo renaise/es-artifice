@@ -297,6 +297,16 @@
     });
   }
 
+  // Atlas expand toggle
+  var $expandToggle = document.getElementById('atlas-expand-toggle');
+  if ($expandToggle) {
+    $expandToggle.addEventListener('click', function () {
+      var section = document.getElementById('atlas-map-section');
+      section.classList.toggle('expanded');
+      if (atlasMap) setTimeout(function () { atlasMap.invalidateSize(); }, 350);
+    });
+  }
+
   // Image URL preview
   var $sfCover = document.getElementById('sf-cover');
   if ($sfCover) {
