@@ -192,6 +192,13 @@
   var $gridSection = document.querySelector('.grid-section');
   var $cmdBar = document.getElementById('cmd-bar');
 
+  var sectionDescriptions = {
+    'index': 'Index [Archive] — The structured, relational record of everything produced — with full provenance and attribution.',
+    'atlas': 'Atlas [Locate] — A spatial index of venues, studios, and environments mapped to creative practice.',
+    'about': ''
+  };
+  var $sectionDesc = document.getElementById('section-desc');
+
   function switchTab(tabName) {
     activeTab = tabName;
     currentQuery = '';
@@ -205,6 +212,17 @@
     $aboutSection.hidden = true;
     $gridSection.style.display = '';
     $cmdBar.style.display = '';
+
+    // Update section description
+    if ($sectionDesc) {
+      var desc = sectionDescriptions[tabName] || '';
+      if (desc) {
+        $sectionDesc.textContent = desc;
+        $sectionDesc.hidden = false;
+      } else {
+        $sectionDesc.hidden = true;
+      }
+    }
 
     if (tabName === 'atlas') {
       $mapSection.hidden = false;

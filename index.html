@@ -115,8 +115,30 @@
     }
     .header-cta:hover { background: var(--text-2); }
 
+    /* ---- Section Description Bar ---- */
+    .section-desc {
+      padding: 10px 24px;
+      font-family: var(--mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-3); border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-desc[hidden] { display: none; }
+
     /* ---- Atlas Map ---- */
-    .atlas-map-section { padding: 0 24px 16px; }
+    .atlas-map-section { padding: 0 24px 0; }
+    .atlas-expand-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 24px; width: 100%; margin: 0 auto;
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--text-3);
+      background: var(--surface); border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 4px 4px;
+      text-decoration: none; cursor: pointer;
+      transition: color 0.12s, background 0.12s;
+    }
+    .atlas-expand-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .atlas-expand-btn svg { width: 12px; height: 12px; }
 
     /* ---- Mode Toggle (sticky bottom bar) ---- */
     .mode-toggle-bar {
@@ -706,8 +728,14 @@
   </div>
 </header>
 
+<div class="section-desc" id="section-desc">Index [Archive] — The structured, relational record of everything produced — with full provenance and attribution.</div>
+
 <section class="atlas-map-section" id="atlas-map-section" hidden>
   <div id="atlas-map" style="width:100%;height:400px;"></div>
+  <a href="atlas.html" class="atlas-expand-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 3h6m0 0v6m0-6L14 10M9 21H3m0 0v-6m0 6l7-7"/></svg>
+    Expand Map
+  </a>
 </section>
 
 <div class="mode-toggle-bar" id="mode-toggle-bar" hidden>
