@@ -120,10 +120,10 @@
       z-index: 500;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 8px 6px 20px;
-      width: min(560px, calc(100vw - 48px));
-      background: rgba(10, 10, 10, 0.8);
+      gap: 10px;
+      padding: 8px 8px 8px 24px;
+      width: min(640px, calc(100vw - 48px));
+      background: rgba(10, 10, 10, 0.82);
       backdrop-filter: blur(24px) saturate(1.4);
       -webkit-backdrop-filter: blur(24px) saturate(1.4);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -136,10 +136,10 @@
     .cmd-search {
       flex: 1;
       min-width: 0;
-      height: 34px;
+      height: 40px;
       padding: 0 8px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: 0.02em;
       color: var(--text);
       background: transparent;
@@ -149,30 +149,30 @@
     .cmd-search::placeholder { color: rgba(255, 255, 255, 0.35); }
     .cmd-divider {
       width: 1px;
-      height: 22px;
+      height: 26px;
       background: rgba(255, 255, 255, 0.12);
       flex-shrink: 0;
     }
     .cmd-submit-btn {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--bg);
       background: var(--text);
       border: none;
-      padding: 7px 16px;
-      border-radius: 24px;
+      padding: 10px 20px;
+      border-radius: 28px;
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
       transition: background 0.15s;
     }
     .cmd-submit-btn:hover { background: var(--text-secondary); }
-    .cmd-submit-btn svg { flex-shrink: 0; }
+    .cmd-submit-btn svg { flex-shrink: 0; width: 12px; height: 12px; }
 
     .sidebar-filters {
       padding: 10px 20px;
