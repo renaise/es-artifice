@@ -556,6 +556,9 @@
       .header-logo-img { height: 56px; }
       .header-tab { padding: 10px 8px; font-size: 10px; }
       .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      .about-pipeline { flex-wrap: wrap; }
+      .about-arrow { display: none; }
+      .about-book { min-width: calc(50% - 12px); }
     }
     @media (max-width: 640px) {
       .header { grid-template-columns: auto 1fr; gap: 6px; padding: 8px 12px; }
@@ -563,16 +566,53 @@
       .header-right { justify-content: flex-end; gap: 6px; }
       .header-left { gap: 6px; }
       .header-logo-img { height: 40px; }
-      .header-search { width: 80px; font-size: 9px; height: 26px; padding: 0 6px; }
-      .header-cta { font-size: 8px; padding: 4px 8px; }
       .view-btn { width: 24px; height: 24px; }
       .view-btn svg { width: 10px; height: 10px; }
       .grid-section { padding: 12px; }
-      .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
       .card-title { font-size: 11px; }
-      .card-meta { font-size: 8px; gap: 4px; }
-      .mode-icon { height: 10px; }
-      .footer { padding: 12px 16px; }
+      .card-meta { font-size: 7px; gap: 3px; }
+      .card-author { font-size: 7px; }
+      .mode-icon { height: 8px; }
+      .overlay-title { font-size: 10px; }
+      .overlay-icon { height: 16px; }
+      .overlay-meta { font-size: 7px; }
+      .group-toggle-bar { padding: 8px 12px; gap: 3px; overflow-x: auto; flex-wrap: nowrap; }
+      .group-toggle-btn { font-size: 8px; padding: 3px 8px; flex-shrink: 0; }
+      .group-header-name { font-size: 13px; }
+      .group-header-count { font-size: 8px; }
+      .cmd-bar { width: calc(100vw - 24px); bottom: 12px; padding: 6px 8px 6px 14px; gap: 6px; }
+      .cmd-search { height: 32px; font-size: 11px; padding: 0 6px; }
+      .cmd-submit-btn { font-size: 8px; padding: 6px 12px; }
+      .submit-panel { width: calc(100vw - 24px); bottom: 60px; max-height: 60vh; }
+      .submit-panel-inner { padding: 12px; }
+      .submit-ghost-circle { width: 90px; height: 90px; }
+      .submit-ghost-label span { font-size: 7px; }
+      .submit-ghost-label svg { width: 18px; height: 18px; }
+      .submit-url-row { flex-direction: column; gap: 6px; }
+      .submit-ig-btn { padding: 8px; text-align: center; }
+      .submit-field-row { flex-direction: column; gap: 6px; }
+      .submit-form-actions { flex-direction: column; gap: 6px; }
+      .submit-btn { text-align: center; width: 100%; }
+      .mode-toggle-bar { padding: 8px 14px; gap: 8px; bottom: 12px; }
+      .mode-toggle-btn img { height: 16px; }
+      .mode-toggle-label { font-size: 8px; }
+      #atlas-map { height: 280px !important; }
+      .atlas-map-section { padding: 0 12px 12px; }
+      .about-section { padding: 32px 16px; }
+      .about-title { font-size: 20px; }
+      .about-desc { font-size: 10px; }
+      .about-book { min-width: 100%; }
+      .about-book strong { font-size: 14px; }
+      .about-modes { flex-direction: column; gap: 12px; }
+      .about-schema-grid { gap: 4px; }
+      .about-schema-grid span { font-size: 8px; padding: 3px 6px; }
+      .profile-header { padding: 16px 12px 8px; }
+      .profile-name { font-size: 18px; }
+      .profile-bio { font-size: 9px; }
+      .footer { padding: 12px 16px; flex-direction: column; text-align: center; }
+      .footer-text { font-size: 8px; }
+      .footer-links a { font-size: 8px; }
     }
   </style>
 </head>
