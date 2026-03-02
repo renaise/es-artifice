@@ -498,6 +498,29 @@
     .about-mode-desc {
       font-size: 9px !important; color: var(--text-3) !important;
     }
+    /* ---- Program Table ---- */
+    .about-program { margin-bottom: 32px; }
+    .program-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .program-table {
+      width: 100%; border-collapse: collapse;
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase;
+    }
+    .program-table th {
+      text-align: left; padding: 8px 12px;
+      color: var(--text-3); font-weight: 400;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap; letter-spacing: 0.04em;
+    }
+    .program-table td {
+      padding: 10px 12px; color: var(--text-2);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top; line-height: 1.5;
+    }
+    .program-table tr:hover td { color: var(--text); background: rgba(255,255,255,0.02); }
+    .program-table td:first-child { color: var(--text); font-weight: 400; white-space: nowrap; }
+    .program-mode-icon { height: 12px; width: auto; vertical-align: middle; }
+
     .about-cta {
       font-family: var(--mono); font-size: 10px;
       text-transform: uppercase; letter-spacing: 0.04em;
@@ -715,6 +738,114 @@
       <div class="about-modes">
         <div class="about-mode"><img src="wb-overlay.png" class="about-mode-icon" alt=""><span>WHITEBOX</span><span class="about-mode-desc">Process-visible, research, educational</span></div>
         <div class="about-mode"><img src="bb-overlay.png" class="about-mode-icon" alt=""><span>BLACKBOX</span><span class="about-mode-desc">Experiential, performative, non-reproducible</span></div>
+      </div>
+    </div>
+    <div class="about-program">
+      <p class="about-schema-label">nodes:ii Program — April 11–12, 2026 — ONX Studio, Tribeca</p>
+      <div class="program-table-wrap">
+        <table class="program-table">
+          <thead>
+            <tr><th>Space</th><th>Location</th><th>Mode</th><th>Programming</th><th>Artists</th><th>Time</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Open House + Whitebox</td>
+              <td>Main Hall / Whitebox Lab</td>
+              <td><img src="wb-overlay.png" class="program-mode-icon" alt="WB"></td>
+              <td>Open studio walk + 3 x 20 presentations, house projection</td>
+              <td>Various</td>
+              <td>5:00</td>
+            </tr>
+            <tr>
+              <td>Performance Room</td>
+              <td>Blackbox Stage</td>
+              <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Audience-facing activation, LED wall, spatial sound, mocap</td>
+              <td>Testu (3), Morakana</td>
+              <td>8:30</td>
+            </tr>
+            <tr>
+              <td>Projector Room</td>
+              <td>Blackbox Right</td>
+              <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Immersive visual environment, generative / video installation</td>
+              <td>Armon Naeini, Sobe Dkoye</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Sound Room</td>
+              <td>Blackbox Left</td>
+              <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Spatial audio activation, paired / independent from projector</td>
+              <td>Morakana, Wendi Yan</td>
+              <td>6:00</td>
+            </tr>
+            <tr>
+              <td>Whitebox Lab</td>
+              <td>Work Room</td>
+              <td><img src="wb-overlay.png" class="program-mode-icon" alt="WB"></td>
+              <td>Whitebox lab installation</td>
+              <td>Morphogenesis (Tammy Qiu), Chimera (Vivian Hou + Sehmon)</td>
+              <td>5:30</td>
+            </tr>
+            <tr>
+              <td>Elevator Entry</td>
+              <td>Front of House</td>
+              <td><img src="wb-overlay.png" class="program-mode-icon" alt="WB"> <img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Check-in, bar, co-branded signage</td>
+              <td>—</td>
+              <td>5:00</td>
+            </tr>
+            <tr>
+              <td>Staff / Storage</td>
+              <td>Back of House</td>
+              <td>—</td>
+              <td>Production staging, gear cases</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Booth</td>
+              <td>Main Hall</td>
+              <td><img src="wb-overlay.png" class="program-mode-icon" alt="WB"> <img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Testu Collective, Morakana, Jungeun Park, Danni Huang</td>
+              <td>Various</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Eco System</td>
+              <td>Main Hall</td>
+              <td><img src="wb-overlay.png" class="program-mode-icon" alt="WB"></td>
+              <td>Eco System presentation</td>
+              <td>Renaise + Fisayo</td>
+              <td>5:00</td>
+            </tr>
+            <tr>
+              <td>DFOS / Acorp</td>
+              <td>Main Hall</td>
+              <td><img src="wb-overlay.png" class="program-mode-icon" alt="WB"></td>
+              <td>Presentation</td>
+              <td>Yancey Strickler</td>
+              <td>6:30</td>
+            </tr>
+            <tr>
+              <td>Listening to the Ether</td>
+              <td>Performance</td>
+              <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Performance set</td>
+              <td>Testu (3)</td>
+              <td>8:30</td>
+            </tr>
+            <tr>
+              <td>Late Program</td>
+              <td>Various</td>
+              <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>DJ sets, closing</td>
+              <td>Sayoko Osada, Yiou Wang, Crystal Jow</td>
+              <td>9:30–10:00</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <button class="about-cta" id="about-submit-cta">Submit an Artifact</button>
