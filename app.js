@@ -364,6 +364,12 @@
       $submitPanel.hidden = true;
     });
   }
+  var $submitToggle2 = document.getElementById('cmd-submit-toggle-2');
+  if ($submitToggle2 && $submitPanel) {
+    $submitToggle2.addEventListener('click', function () {
+      $submitPanel.hidden = !$submitPanel.hidden;
+    });
+  }
 
   // AI Import
   var WORKER_URL = 'https://artifice-ig-import.developer-fec.workers.dev';

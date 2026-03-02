@@ -291,28 +291,44 @@
     /* ---- Command Bar (floating bottom) ---- */
     .cmd-bar {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      z-index: 90; display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px 8px 20px;
-      background: rgba(10,10,10,0.85);
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,0.12); border-radius: 40px;
-      width: min(600px, calc(100vw - 32px));
+      z-index: 90; display: flex; align-items: center; gap: 0;
+      padding: 7px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.4);
+      border-radius: 50px;
+      width: min(620px, calc(100vw - 32px));
     }
+    .cmd-plus {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; cursor: pointer; transition: background 0.15s;
+      color: rgba(255,255,255,0.5);
+    }
+    .cmd-plus:hover { background: rgba(255,255,255,0.14); color: var(--text); }
+    .cmd-plus svg { width: 14px; height: 14px; }
     .cmd-search {
-      flex: 1; min-width: 0; height: 38px; padding: 0 12px;
-      font-family: var(--mono); font-size: 13px;
+      flex: 1; min-width: 0; height: 42px; padding: 0 14px;
+      font-family: var(--mono); font-size: 14px;
       color: var(--text); background: transparent; border: none; outline: none;
     }
-    .cmd-search::placeholder { color: rgba(255,255,255,0.4); }
-    .cmd-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+    .cmd-search::placeholder { color: rgba(255,255,255,0.3); }
+    .cmd-divider { display: none; }
     .cmd-submit-btn {
       display: flex; align-items: center; gap: 6px;
-      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
-      color: var(--bg); background: var(--text); border: none;
-      padding: 8px 18px; border-radius: 24px; cursor: pointer;
-      white-space: nowrap; flex-shrink: 0; letter-spacing: 0.04em;
+      font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); letter-spacing: 0.06em;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 11px 22px; border-radius: 50px; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0;
+      transition: all 0.15s;
     }
-    .cmd-submit-btn:hover { background: var(--text-2); }
+    .cmd-submit-btn:hover { background: rgba(255,255,255,0.15); color: var(--text); }
+    .cmd-submit-btn svg { display: none; }
 
     /* ---- Upload Zone ---- */
     .submit-upload-zone { text-align: center; margin-bottom: 12px; }
@@ -705,12 +721,9 @@
 
 <!-- Floating command bar -->
 <div class="cmd-bar" id="cmd-bar">
+  <button class="cmd-plus" id="cmd-submit-toggle"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2v5H3v2h5v5h2V9h5V7h-5V2z"/></svg></button>
   <input type="search" class="cmd-search" id="search-input" placeholder="Search the Index..." autocomplete="off">
-  <div class="cmd-divider"></div>
-  <button class="cmd-submit-btn" id="cmd-submit-toggle">
-    <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor" style="flex-shrink:0"><path d="M8 1v6H2v2h6v6h2V9h6V7H10V1z"/></svg>
-    Submit
-  </button>
+  <button class="cmd-submit-btn" id="cmd-submit-toggle-2">Submit</button>
 </div>
 
 <!-- Submit panel (slides up from cmd bar) -->
