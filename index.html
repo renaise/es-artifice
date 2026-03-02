@@ -290,34 +290,61 @@
 
     /* ---- Command Bar (floating bottom) ---- */
     .cmd-bar {
-      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-      z-index: 90; display: flex; align-items: center; gap: 8px;
-      padding: 6px 8px 6px 16px;
-      background: rgba(10,10,10,0.8);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 40px;
-      width: min(520px, calc(100vw - 32px));
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 90; display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px 8px 20px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 40px;
+      width: min(600px, calc(100vw - 32px));
     }
     .cmd-search {
-      flex: 1; min-width: 0; height: 32px; padding: 0 8px;
-      font-family: var(--mono); font-size: 11px;
+      flex: 1; min-width: 0; height: 38px; padding: 0 12px;
+      font-family: var(--mono); font-size: 13px;
       color: var(--text); background: transparent; border: none; outline: none;
     }
-    .cmd-search::placeholder { color: rgba(255,255,255,0.35); }
-    .cmd-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.12); flex-shrink: 0; }
+    .cmd-search::placeholder { color: rgba(255,255,255,0.4); }
+    .cmd-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.15); flex-shrink: 0; }
     .cmd-submit-btn {
-      display: flex; align-items: center; gap: 5px;
-      font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
       color: var(--bg); background: var(--text); border: none;
-      padding: 6px 14px; border-radius: 20px; cursor: pointer;
-      white-space: nowrap; flex-shrink: 0;
+      padding: 8px 18px; border-radius: 24px; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0; letter-spacing: 0.04em;
     }
     .cmd-submit-btn:hover { background: var(--text-2); }
 
+    /* ---- Upload Zone ---- */
+    .submit-upload-zone { text-align: center; margin-bottom: 12px; }
+    .submit-ghost-circle {
+      width: 120px; height: 120px; margin: 0 auto 12px;
+      border-radius: 50%; border: 2px dashed rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .submit-ghost-circle:hover { border-color: rgba(255,255,255,0.3); }
+    .submit-ghost-circle.has-image { border-style: solid; border-color: rgba(255,255,255,0.2); }
+    .submit-ghost-circle .submit-thumb {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+      position: absolute; inset: 0;
+    }
+    .submit-ghost-label {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      color: rgba(255,255,255,0.3); pointer-events: none;
+    }
+    .submit-ghost-label span {
+      font-family: var(--mono); font-size: 8px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .submit-ghost-circle.has-image .submit-ghost-label { display: none; }
+    .submit-url-row { display: flex; gap: 8px; }
+
     /* ---- Submit Panel ---- */
     .submit-panel {
-      position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
-      z-index: 91; width: min(520px, calc(100vw - 32px));
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      z-index: 91; width: min(600px, calc(100vw - 32px));
       background: rgba(15,15,15,0.92);
       backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
@@ -653,13 +680,22 @@
       <span class="submit-panel-title">Submit Artifact</span>
       <button class="submit-panel-close" id="submit-panel-close">&times;</button>
     </div>
-    <div class="submit-ig-input-wrap">
-      <input type="url" class="submit-ig-input" id="sf-cover" placeholder="Paste image URL..." autocomplete="off">
-      <button class="submit-ig-btn" id="ig-fetch">Import with AI</button>
+    <div class="submit-upload-zone" id="submit-upload-zone">
+      <div class="submit-ghost-circle" id="submit-ghost-circle">
+        <img class="submit-thumb" id="submit-thumb" src="" alt="" hidden>
+        <div class="submit-ghost-label" id="submit-ghost-label">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Drop image or paste URL</span>
+        </div>
+      </div>
+      <div class="submit-url-row">
+        <input type="url" class="submit-ig-input" id="sf-cover" placeholder="Paste image URL..." autocomplete="off">
+        <button class="submit-ig-btn" id="ig-fetch">Import</button>
+      </div>
     </div>
+    <div class="submit-ig-status" id="ig-status"></div>
     <form class="submit-form" id="submit-form" hidden>
       <div class="submit-form-row">
-        <img class="submit-thumb" id="submit-thumb" src="" alt="" hidden>
         <div class="submit-fields">
           <label class="submit-field"><span>Title</span><input type="text" id="sf-title" required></label>
           <label class="submit-field"><span>Description</span><textarea id="sf-desc" rows="2"></textarea></label>
@@ -684,7 +720,6 @@
         <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn submit-btn--alt">Email Instead</a>
       </div>
     </form>
-    <div class="submit-ig-status" id="ig-status"></div>
   </div>
 </div>
 

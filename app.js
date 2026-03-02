@@ -228,11 +228,11 @@
     SPACES.forEach(function (s) {
       if (!s.lat || !s.lng) return;
       if (activeFilter !== 'all' && s.mode !== activeFilter) return;
-      var color = s.mode === 'WHITEBOX' ? '#88aacc' : '#cc88aa';
+      var pinSrc = s.mode === 'WHITEBOX' ? 'wb-overlay.png' : 'bb-overlay.png';
       var icon = L.divIcon({
-        className: 'map-dot',
-        html: '<div style="width:8px;height:8px;border-radius:50%;background:' + color + ';box-shadow:0 0 6px ' + color + ';"></div>',
-        iconSize: [8, 8], iconAnchor: [4, 4]
+        className: 'map-pin',
+        html: '<img src="' + pinSrc + '" style="width:20px;height:auto;filter:drop-shadow(0 0 4px rgba(255,255,255,0.4));">',
+        iconSize: [20, 25], iconAnchor: [10, 25]
       });
       var m = L.marker([s.lat, s.lng], { icon: icon })
         .bindPopup('<div class="map-popup">' + s.title + '</div>')
@@ -398,8 +398,7 @@
             document.getElementById('sf-tags').value = (s.tags || []).join(', ');
             var srcInput = document.getElementById('sf-source');
             if (srcInput) srcInput.value = url;
-            $submitThumb.src = url;
-            $submitThumb.hidden = false;
+            showImagePreview(url);
             $submitForm.hidden = false;
             $igStatus.textContent = 'AI classified \u2014 review and adjust fields below.';
           })
@@ -415,17 +414,59 @@
     });
   }
 
-  // Image URL preview
+  // Image URL preview + ghost circle
   var $sfCover = document.getElementById('sf-cover');
+  var $ghostCircle = document.getElementById('submit-ghost-circle');
+
+  function showImagePreview(url) {
+    if ($submitThumb && url) {
+      $submitThumb.src = url;
+      $submitThumb.hidden = false;
+      if ($ghostCircle) $ghostCircle.classList.add('has-image');
+    }
+  }
+
   if ($sfCover) {
     $sfCover.addEventListener('input', function () {
       var url = $sfCover.value.trim();
       if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
-        $submitThumb.src = url;
-        $submitThumb.hidden = false;
+        showImagePreview(url);
       } else {
-        $submitThumb.hidden = true;
+        if ($submitThumb) $submitThumb.hidden = true;
+        if ($ghostCircle) $ghostCircle.classList.remove('has-image');
       }
+    });
+  }
+
+  // Drag and drop on ghost circle
+  if ($ghostCircle) {
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      $ghostCircle.addEventListener(evt, function (e) {
+        e.preventDefault();
+        $ghostCircle.style.borderColor = 'rgba(255,255,255,0.5)';
+      });
+    });
+    ['dragleave', 'drop'].forEach(function (evt) {
+      $ghostCircle.addEventListener(evt, function (e) {
+        e.preventDefault();
+        $ghostCircle.style.borderColor = '';
+      });
+    });
+    $ghostCircle.addEventListener('drop', function (e) {
+      var file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          showImagePreview(ev.target.result);
+          $submitForm.hidden = false;
+          if ($igStatus) $igStatus.textContent = 'Image loaded — fill in the details below.';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    // Click to paste from clipboard
+    $ghostCircle.addEventListener('click', function () {
+      if ($sfCover) $sfCover.focus();
     });
   }
 
