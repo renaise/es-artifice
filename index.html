@@ -339,9 +339,30 @@
     }
     .submit-ig-btn:hover { background: var(--text-2); }
     .submit-form { text-align: left; margin-top: 0; }
+    .submit-dropzone {
+      width: 100%; height: 140px; margin-bottom: 16px;
+      border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .submit-dropzone:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.03); }
+    .submit-dropzone.dragover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); }
+    .submit-dropzone.has-image { border-style: solid; border-color: rgba(255,255,255,0.1); }
+    .submit-dropzone-prompt {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-3); pointer-events: none;
+    }
+    .submit-dropzone-prompt span {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .submit-preview {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; border-radius: 8px;
+    }
     .submit-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
-    .submit-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
-    .submit-fields { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .submit-fields { display: flex; flex-direction: column; gap: 12px; }
     .submit-field { display: flex; flex-direction: column; gap: 4px; }
     .submit-field span {
       font-family: var(--mono); font-size: 9px;
@@ -371,20 +392,24 @@
     }
     .submit-field-row { display: flex; gap: 10px; }
     .submit-field-row .submit-field { flex: 1; }
-    .submit-form-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .submit-form-actions { display: flex; gap: 10px; margin-top: 16px; }
     .submit-btn {
-      display: inline-block; padding: 10px 24px;
-      font-family: var(--mono); font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--bg); background: var(--text);
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 28px;
+      font-family: var(--mono); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em;
       border: none; text-decoration: none; cursor: pointer;
+      border-radius: 6px; transition: background 0.15s, border-color 0.15s;
     }
-    .submit-btn:hover { background: var(--text-2); }
+    .submit-btn--primary {
+      color: var(--bg); background: var(--text); flex: 1;
+    }
+    .submit-btn--primary:hover { background: var(--text-2); }
     .submit-btn--alt {
-      color: var(--text); background: transparent;
-      border: 1px solid var(--border);
+      color: var(--text-2); background: transparent;
+      border: 1px solid var(--border); flex-shrink: 0;
     }
-    .submit-btn--alt:hover { border-color: var(--text-3); background: var(--surface); }
+    .submit-btn--alt:hover { color: var(--text); border-color: var(--text-3); background: rgba(255,255,255,0.03); }
     .submit-ig-status {
       font-family: var(--mono); font-size: 9px;
       color: var(--text-2); margin-top: 8px;
@@ -644,37 +669,49 @@
   <div class="submit-panel-inner">
     <div class="submit-panel-header">
       <span class="submit-panel-title">Submit Artifact</span>
-      <button class="submit-panel-close" id="submit-panel-close">&times;</button>
+      <button class="submit-panel-close" id="submit-panel-close">Close</button>
     </div>
+
     <form class="submit-form" id="submit-form">
-      <div class="submit-form-row">
-        <img class="submit-thumb" id="submit-thumb" src="" alt="" hidden>
-        <div class="submit-fields">
-          <label class="submit-field"><span>Title</span><input type="text" id="sf-title" required></label>
-          <label class="submit-field"><span>Image URL</span><input type="url" id="sf-cover" placeholder="https://..."></label>
-          <label class="submit-field"><span>Description</span><textarea id="sf-desc" rows="2"></textarea></label>
-          <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors"></label>
-          <div class="submit-field-row">
-            <label class="submit-field"><span>Medium</span>
-              <select id="sf-medium"><option value="">Select...</option><option>Object</option><option>Spatial</option><option>Digital</option><option>Performance</option><option>Protocol</option><option>Interface</option><option>Documentation</option><option>Environmental</option></select>
-            </label>
-            <label class="submit-field"><span>Mode</span>
-              <select id="sf-mode"><option value="">Select...</option><option>WHITEBOX</option><option>BLACKBOX</option></select>
-            </label>
-            <label class="submit-field"><span>Entity</span>
-              <select id="sf-entity"><option value="">Select...</option><option>Studio Artifice</option><option>Artifice NYC</option></select>
-            </label>
-          </div>
-          <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
-          <label class="submit-field"><span>Source URL (optional)</span><input type="url" id="sf-source" placeholder="Instagram, Are.na, etc."></label>
+      <!-- Cover image upload -->
+      <div class="submit-dropzone" id="submit-dropzone">
+        <input type="file" id="sf-file" accept="image/*" hidden>
+        <img id="submit-preview" class="submit-preview" hidden>
+        <div class="submit-dropzone-prompt" id="dropzone-prompt">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+          <span>Drop cover image or click to upload</span>
         </div>
       </div>
+
+      <div class="submit-fields">
+        <label class="submit-field"><span>Title</span><input type="text" id="sf-title" placeholder="Artifact name" required></label>
+        <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors" placeholder="Creator names"></label>
+        <label class="submit-field"><span>Description</span><textarea id="sf-desc" placeholder="What is this artifact?"></textarea></label>
+
+        <div class="submit-field-row">
+          <label class="submit-field"><span>Medium</span>
+            <select id="sf-medium"><option value="">Select...</option><option>Object</option><option>Spatial</option><option>Digital</option><option>Performance</option><option>Protocol</option><option>Interface</option><option>Documentation</option><option>Environmental</option></select>
+          </label>
+          <label class="submit-field"><span>Mode</span>
+            <select id="sf-mode"><option value="">Select...</option><option>WHITEBOX</option><option>BLACKBOX</option></select>
+          </label>
+        </div>
+
+        <div class="submit-field-row">
+          <label class="submit-field"><span>Entity</span>
+            <select id="sf-entity"><option value="">Select...</option><option>Studio Artifice</option><option>Artifice NYC</option></select>
+          </label>
+          <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
+        </div>
+
+        <label class="submit-field"><span>Source URL (optional)</span><input type="url" id="sf-source" placeholder="Instagram, Are.na, website..."></label>
+      </div>
+
       <div class="submit-form-actions">
-        <button type="submit" class="submit-btn">Add to Index</button>
+        <button type="submit" class="submit-btn submit-btn--primary">Add to Index</button>
         <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn submit-btn--alt">Email Instead</a>
       </div>
     </form>
-    <div class="submit-ig-status" id="ig-status"></div>
   </div>
 </div>
 
@@ -688,6 +725,39 @@
 </footer>
 
 <script src="app.js"></script>
+<script>
+// Dropzone
+(function() {
+  var zone = document.getElementById('submit-dropzone');
+  var fileInput = document.getElementById('sf-file');
+  var preview = document.getElementById('submit-preview');
+  var prompt = document.getElementById('dropzone-prompt');
+  if (!zone) return;
+
+  zone.addEventListener('click', function() { fileInput.click(); });
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault(); zone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files.length) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file) {
+    if (!file.type.startsWith('image/')) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.hidden = false;
+      prompt.style.display = 'none';
+      zone.classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  }
+})();
+</script>
 <script>
 (function() {
   var input = document.getElementById('search-input');
