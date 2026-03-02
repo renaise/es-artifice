@@ -350,15 +350,17 @@
       align-items: flex-start;
     }
     .desc-panel-close {
-      width: 28px;
-      height: 28px;
+      padding: 4px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: none;
       border: 1px solid var(--border);
       color: var(--text-tertiary);
-      font-size: 14px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
       cursor: pointer;
       flex-shrink: 0;
     }
@@ -627,7 +629,7 @@
     panel.innerHTML =
       '<div class="desc-panel-header">' +
         '<div class="desc-panel-mode">' + s.mode + '</div>' +
-        '<button class="desc-panel-close" id="panel-close">&times;</button>' +
+        '<button class="desc-panel-close" id="panel-close">Clear</button>' +
       '</div>' +
       '<div class="desc-panel-name">' + s.name + '</div>' +
       '<div class="desc-panel-location">' + s.location + '</div>' +
