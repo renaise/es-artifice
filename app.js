@@ -320,6 +320,8 @@
       $aboutSection.hidden = false;
       $gridSection.style.display = 'none';
       $cmdBar.style.display = 'none';
+    } else if (tabName === 'profiles') {
+      activeGrouping = 'creator';
     }
     render();
   }
