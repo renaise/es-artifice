@@ -160,11 +160,11 @@
     SPACES.forEach(function (s) {
       if (!s.lat || !s.lng) return;
       if (activeFilter !== 'all' && s.mode !== activeFilter) return;
-      var color = s.mode === 'WHITEBOX' ? '#88aacc' : '#cc88aa';
+      var iconSrc = s.mode === 'WHITEBOX' ? 'whitebox-icon.png' : 'blackbox-icon.png';
       var icon = L.divIcon({
-        className: 'map-dot',
-        html: '<div style="width:8px;height:8px;border-radius:50%;background:' + color + ';box-shadow:0 0 6px ' + color + ';"></div>',
-        iconSize: [8, 8], iconAnchor: [4, 4]
+        className: 'atlas-marker',
+        html: '<div class="atlas-marker-circle"><img src="' + iconSrc + '" alt="' + s.mode + '"></div><span class="atlas-marker-label">' + s.title + '</span>',
+        iconSize: [80, 72], iconAnchor: [40, 30]
       });
       var m = L.marker([s.lat, s.lng], { icon: icon })
         .bindPopup('<div class="map-popup">' + s.title + '</div>')
