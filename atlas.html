@@ -15,21 +15,19 @@
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #0a0a0a;
-      --surface: #111113;
-      --surface-elevated: #18181b;
-      --border: #1e1e22;
-      --border-light: #2a2a2e;
-      --text: #ededef;
-      --text-secondary: #9898a0;
-      --text-tertiary: #5a5a62;
+      --bg: #000;
+      --surface: #0a0a0a;
+      --border: #1a1a1a;
+      --text: #fff;
+      --text-2: #aaa;
+      --text-3: #555;
       --accent: #c8ff00;
-      --font-display: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      --font-mono: 'Fragment Mono', ui-monospace, monospace;
+      --mono: 'Fragment Mono', ui-monospace, monospace;
+      --sans: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
     html, body { height: 100%; overflow: hidden; }
     body {
-      font-family: var(--font-display);
+      font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
       -webkit-font-smoothing: antialiased;
@@ -57,21 +55,21 @@
     }
     .header-left { display: flex; align-items: center; gap: 16px; }
     .header-logo {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       text-decoration: none;
     }
-    .header-logo:hover { color: var(--text-secondary); }
+    .header-logo:hover { color: var(--text-2); }
     .header-nav { display: flex; gap: 20px; align-items: center; }
     .header-nav a {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       text-decoration: none;
       padding-bottom: 2px;
     }
@@ -80,14 +78,23 @@
       color: var(--text);
       border-bottom: 1px solid var(--text);
     }
-    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
     .header-count {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
     }
+    .header-nav-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-3);
+      text-decoration: none;
+    }
+    .header-nav-link:hover { color: var(--text); }
 
     /* Sidebar */
     .sidebar {
@@ -104,11 +111,11 @@
       z-index: 10;
     }
     .sidebar-title {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
     }
 
     /* Floating command bar (bottom) */
@@ -120,59 +127,60 @@
       z-index: 500;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 8px 6px 20px;
-      width: min(560px, calc(100vw - 48px));
-      background: rgba(10, 10, 10, 0.8);
+      gap: 10px;
+      padding: 10px 10px 10px 28px;
+      width: min(660px, calc(100vw - 40px));
+      background: rgba(10, 10, 10, 0.82);
       backdrop-filter: blur(24px) saturate(1.4);
       -webkit-backdrop-filter: blur(24px) saturate(1.4);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 40px;
+      border-radius: 44px;
       box-shadow:
         0 4px 32px rgba(0, 0, 0, 0.5),
-        0 0 40px rgba(255, 255, 255, 0.02),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 0 24px rgba(255, 255, 255, 0.03),
+        0 0 60px rgba(255, 255, 255, 0.02);
     }
     .cmd-search {
       flex: 1;
       min-width: 0;
-      height: 34px;
-      padding: 0 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
+      height: 42px;
+      padding: 0 10px;
+      font-family: var(--mono);
+      font-size: 14px;
+      text-transform: uppercase;
       letter-spacing: 0.02em;
       color: var(--text);
       background: transparent;
       border: none;
       outline: none;
     }
-    .cmd-search::placeholder { color: rgba(255, 255, 255, 0.35); }
+    .cmd-search::placeholder { color: rgba(255, 255, 255, 0.3); }
     .cmd-divider {
       width: 1px;
-      height: 22px;
-      background: rgba(255, 255, 255, 0.12);
+      height: 28px;
+      background: rgba(255, 255, 255, 0.1);
       flex-shrink: 0;
     }
     .cmd-submit-btn {
       display: flex;
       align-items: center;
-      gap: 5px;
-      font-family: var(--font-mono);
-      font-size: 10px;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--bg);
       background: var(--text);
       border: none;
-      padding: 7px 16px;
-      border-radius: 24px;
+      padding: 10px 20px;
+      border-radius: 28px;
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
       transition: background 0.15s;
     }
-    .cmd-submit-btn:hover { background: var(--text-secondary); }
-    .cmd-submit-btn svg { flex-shrink: 0; }
+    .cmd-submit-btn:hover { background: var(--text-2); }
+    .cmd-submit-btn svg { flex-shrink: 0; width: 10px; height: 10px; }
 
     .sidebar-filters {
       padding: 10px 20px;
@@ -186,16 +194,16 @@
     }
     .filter-btn {
       padding: 4px 10px;
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       background: transparent;
       border: 1px solid transparent;
       cursor: pointer;
     }
-    .filter-btn:hover { color: var(--text-secondary); }
+    .filter-btn:hover { color: var(--text-2); }
     .filter-btn.active {
       color: var(--text);
       border-color: var(--border);
@@ -210,33 +218,33 @@
       transition: background 0.1s;
     }
     .space-item:hover { background: var(--surface); }
-    .space-item.active { background: var(--surface-elevated); border-left: 2px solid var(--accent); }
+    .space-item.active { background: rgba(255,255,255,0.04); border-left: 2px solid var(--accent); }
     .space-item-name {
-      font-family: var(--font-display);
+      font-family: var(--sans);
       font-size: 13px;
       font-weight: 400;
       color: var(--text);
       margin-bottom: 3px;
     }
     .space-item-location {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
     }
     .space-item-mode {
       display: inline-block;
       margin-top: 4px;
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       padding: 2px 6px;
       border: 1px solid var(--border);
     }
-    .space-item-mode.whitebox { color: var(--text-secondary); }
-    .space-item-mode.blackbox { color: var(--text-tertiary); }
+    .space-item-mode.whitebox { color: var(--text-2); }
+    .space-item-mode.blackbox { color: var(--text-3); }
 
     /* Map */
     .map-container {
@@ -245,11 +253,11 @@
     #map { width: 100%; height: 100%; }
 
     /* Leaflet overrides */
-    .leaflet-container { background: #0a0a0a; }
+    .leaflet-container { background: #000; }
     .leaflet-control-zoom { border: 1px solid var(--border) !important; }
     .leaflet-control-zoom a {
       background: var(--bg) !important;
-      color: var(--text-tertiary) !important;
+      color: var(--text-3) !important;
       border-color: var(--border) !important;
       width: 30px !important;
       height: 30px !important;
@@ -278,7 +286,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #111113;
+      background: #0a0a0a;
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow:
@@ -306,7 +314,7 @@
       object-fit: contain;
     }
     .marker-label {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 7px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -336,11 +344,11 @@
       padding: 40px;
     }
     .desc-panel-empty-text {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       text-align: center;
     }
     .desc-panel-header {
@@ -350,29 +358,31 @@
       align-items: flex-start;
     }
     .desc-panel-close {
-      width: 28px;
-      height: 28px;
+      padding: 4px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: none;
       border: 1px solid var(--border);
-      color: var(--text-tertiary);
-      font-size: 14px;
+      color: var(--text-3);
+      font-family: var(--mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
       cursor: pointer;
       flex-shrink: 0;
     }
-    .desc-panel-close:hover { color: var(--text); border-color: var(--border-light); }
+    .desc-panel-close:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
     .desc-panel-mode {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       margin-bottom: 8px;
     }
     .desc-panel-name {
-      font-family: var(--font-display);
+      font-family: var(--sans);
       font-size: 22px;
       font-weight: 300;
       letter-spacing: -0.01em;
@@ -381,11 +391,11 @@
       margin-top: 4px;
     }
     .desc-panel-location {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       padding: 6px 24px 0;
     }
     .desc-panel-divider {
@@ -394,20 +404,20 @@
       border-top: 1px solid var(--border);
     }
     .desc-panel-section-label {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
       padding: 0 24px;
       margin-bottom: 8px;
     }
     .desc-panel-text {
-      font-family: var(--font-display);
+      font-family: var(--sans);
       font-size: 13px;
       font-weight: 300;
       line-height: 1.6;
-      color: var(--text-secondary);
+      color: var(--text-2);
       padding: 0 24px;
     }
     .desc-panel-meta {
@@ -421,25 +431,25 @@
       border-bottom: 1px solid var(--border);
     }
     .desc-panel-meta-label {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-tertiary);
+      color: var(--text-3);
     }
     .desc-panel-meta-value {
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-secondary);
+      color: var(--text-2);
       text-align: right;
     }
     .desc-panel-link {
       display: inline-block;
       margin: 20px 24px;
       padding: 8px 16px;
-      font-family: var(--font-mono);
+      font-family: var(--mono);
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -447,7 +457,7 @@
       border: 1px solid var(--border);
       text-decoration: none;
     }
-    .desc-panel-link:hover { background: var(--surface); border-color: var(--border-light); }
+    .desc-panel-link:hover { background: var(--surface); border-color: rgba(255,255,255,0.15); }
 
     /* Responsive */
     @media (max-width: 900px) {
@@ -463,16 +473,17 @@
 
   <header class="header">
     <div class="header-left">
-      <a href="index.html" class="header-logo">Artifice [Ecosystem]</a>
+      <a href="index.html" class="header-logo">ARTIFICE [ECOSYSTEM]</a>
     </div>
     <nav class="header-nav">
       <a href="#">Radar</a>
       <a href="#">Profiles</a>
-      <a href="#" class="active">Atlas</a>
-      <a href="#">Index</a>
+      <a href="atlas.html" class="active">Atlas</a>
+      <a href="index.html">Index</a>
     </nav>
     <div class="header-right">
       <span class="header-count" id="space-count"></span>
+      <a href="about.html" class="header-nav-link">About</a>
     </div>
   </header>
 
@@ -496,7 +507,7 @@
     <input type="search" class="cmd-search" id="search" placeholder="Search for a space ..." autocomplete="off">
     <div class="cmd-divider"></div>
     <button class="cmd-submit-btn" id="cmd-submit-btn">
-      <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M8 1v6H2v2h6v6h2V9h6V7H10V1z"/></svg>
+      <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor"><path d="M8 1v6H2v2h6v6h2V9h6V7H10V1z"/></svg>
       Submit
     </button>
   </div>
@@ -576,7 +587,7 @@
       return matchesFilter && matchesSearch;
     });
 
-    document.getElementById('space-count').textContent = filtered.length + ' spaces';
+    document.getElementById('space-count').textContent = filtered.length + ' space' + (filtered.length !== 1 ? 's' : '');
 
     filtered.forEach(function(s) {
       const li = document.createElement('li');
@@ -627,7 +638,7 @@
     panel.innerHTML =
       '<div class="desc-panel-header">' +
         '<div class="desc-panel-mode">' + s.mode + '</div>' +
-        '<button class="desc-panel-close" id="panel-close">&times;</button>' +
+        '<button class="desc-panel-close" id="panel-close">Clear</button>' +
       '</div>' +
       '<div class="desc-panel-name">' + s.name + '</div>' +
       '<div class="desc-panel-location">' + s.location + '</div>' +
