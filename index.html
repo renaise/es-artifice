@@ -524,6 +524,15 @@
       color: var(--text); font-size: 11px; letter-spacing: 0.08em;
       padding: 16px 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.15);
     }
+    .program-contingent td { opacity: 0.35; }
+    .program-contingent td:first-child::after {
+      content: ' *'; font-size: 8px; vertical-align: super;
+    }
+    .program-footnote {
+      font-family: var(--mono); font-size: 9px;
+      color: var(--text-3); margin-top: 12px; font-style: italic;
+      text-transform: none;
+    }
 
     .about-cta {
       font-family: var(--mono); font-size: 10px;
@@ -834,7 +843,7 @@
               <td>Whitebox lab presentation. Process, research, and live demonstration of the Morphogenesis system.</td>
               <td>Tammy Qiu</td>
             </tr>
-            <tr>
+            <tr class="program-contingent">
               <td>6:00</td>
               <td>TBD</td>
               <td>Blackbox Left / Sound Room</td>
@@ -858,7 +867,7 @@
               <td>Break. Bar open. Open studio walk continues. Booth visits.</td>
               <td>—</td>
             </tr>
-            <tr>
+            <tr class="program-contingent">
               <td>7:30</td>
               <td>ONX Hold</td>
               <td>—</td>
@@ -866,7 +875,7 @@
               <td>ONX Studio reserved programming block.</td>
               <td>ONX Hold</td>
             </tr>
-            <tr>
+            <tr class="program-contingent">
               <td>8:00</td>
               <td>ONX Hold</td>
               <td>—</td>
@@ -882,24 +891,41 @@
               <td>Live performance. Audience-facing activation on the blackbox stage. Full AV — LED wall, spatial sound, motion capture.</td>
               <td>Testu (3)</td>
             </tr>
+            <tr class="program-contingent">
+              <td>9:30</td>
+              <td>ONX Hold</td>
+              <td>—</td>
+              <td>—</td>
+              <td>ONX Studio reserved programming block.</td>
+              <td>ONX Hold</td>
+            </tr>
             <tr>
               <td>9:30</td>
               <td>Late Program</td>
               <td>Various</td>
               <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
-              <td>DJ sets and closing program. Transition from structured programming to open floor.</td>
-              <td>Sayoko Osada, Crystal Jow</td>
+              <td>DJ set. Transition from structured programming to open floor.</td>
+              <td>Crystal Jow</td>
+            </tr>
+            <tr class="program-contingent">
+              <td>10:00</td>
+              <td>TBD</td>
+              <td>Various</td>
+              <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
+              <td>Late set. Contingent on confirmation.</td>
+              <td>Sayoko Osada</td>
             </tr>
             <tr>
               <td>10:00</td>
               <td>Late Program</td>
               <td>Various</td>
               <td><img src="bb-overlay.png" class="program-mode-icon" alt="BB"></td>
-              <td>Final sets. Wind down.</td>
+              <td>Final set. Wind down.</td>
               <td>Yiou Wang</td>
             </tr>
           </tbody>
         </table>
+        <p class="program-footnote">* Grayed rows are contingent — pending confirmation from ONX or artist.</p>
       </div>
     </div>
     <button class="about-cta" id="about-submit-cta">Submit an Artifact</button>
