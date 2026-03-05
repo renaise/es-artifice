@@ -293,10 +293,10 @@
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       z-index: 90; display: flex; align-items: center; gap: 0;
       padding: 7px;
-      background: rgba(255,255,255,0.06);
+      background: rgba(20,20,20,0.85);
       backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 20px rgba(255,255,255,0.06), 0 0 60px rgba(255,255,255,0.03), 0 8px 32px rgba(0,0,0,0.5);
       border-radius: 50px;
       width: min(620px, calc(100vw - 32px));
     }
@@ -315,7 +315,7 @@
       font-family: var(--mono); font-size: 14px;
       color: var(--text); background: transparent; border: none; outline: none;
     }
-    .cmd-search::placeholder { color: rgba(255,255,255,0.3); }
+    .cmd-search::placeholder { color: rgba(255,255,255,0.45); }
     .cmd-divider { display: none; }
     .cmd-submit-btn {
       display: flex; align-items: center; gap: 6px;
@@ -791,7 +791,7 @@
       </div>
     </div>
     <div class="submit-ig-status" id="ig-status"></div>
-    <form class="submit-form" id="submit-form" hidden>
+    <form class="submit-form" id="submit-form">
       <div class="submit-form-row">
         <div class="submit-fields">
           <label class="submit-field"><span>Title</span><input type="text" id="sf-title" required></label>

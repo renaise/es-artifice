@@ -391,7 +391,6 @@
             $igFetch.disabled = false;
             if (data.error) {
               $igStatus.textContent = data.error;
-              $submitForm.hidden = false;
               return;
             }
             var s = data.schema || {};
@@ -405,17 +404,14 @@
             var srcInput = document.getElementById('sf-source');
             if (srcInput) srcInput.value = url;
             showImagePreview(url);
-            $submitForm.hidden = false;
             $igStatus.textContent = 'AI classified \u2014 review and adjust fields below.';
           })
           .catch(function (err) {
             $igFetch.disabled = false;
             $igStatus.textContent = 'AI error: ' + err.message;
-            $submitForm.hidden = false;
           });
       } else {
-        $submitForm.hidden = false;
-        $igStatus.textContent = 'Upload an image above or fill in the fields manually.';
+        $igStatus.textContent = 'Upload an image above or paste a URL to auto-classify.';
       }
     });
   }
@@ -452,8 +448,7 @@
       var reader = new FileReader();
       reader.onload = function (ev) {
         showImagePreview(ev.target.result);
-        $submitForm.hidden = false;
-        if ($igStatus) $igStatus.textContent = 'Image loaded — fill in the details below.';
+        if ($igStatus) $igStatus.textContent = 'Image loaded.';
       };
       reader.readAsDataURL(file);
     }
@@ -524,7 +519,8 @@
         if (t.textContent.trim() === 'Index') t.classList.add('header-tab--active');
       });
       render();
-      $submitForm.hidden = true;
+      // Close panel and reset form
+      if ($submitPanel) $submitPanel.hidden = true;
       if ($sfCover) $sfCover.value = '';
       if ($submitThumb) { $submitThumb.hidden = true; $submitThumb.src = ''; }
       if ($ghostCircle) $ghostCircle.classList.remove('has-image');
@@ -538,7 +534,7 @@
       document.getElementById('sf-tags').value = '';
       var srcInput = document.getElementById('sf-source');
       if (srcInput) srcInput.value = '';
-      $igStatus.textContent = 'Added to Index as ' + newArtifact.code + '. (Session only — not persisted.)';
+      if ($igStatus) $igStatus.textContent = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
