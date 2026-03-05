@@ -499,9 +499,8 @@
       e.preventDefault();
       var medium = document.getElementById('sf-medium').value;
       var mode = document.getElementById('sf-mode').value;
-      var entity = document.getElementById('sf-entity').value;
-      if (!medium || !mode || !entity) {
-        $igStatus.textContent = 'Please select Medium, Mode, and Entity.';
+      if (!medium || !mode) {
+        $igStatus.textContent = 'Please select Medium and Mode.';
         return;
       }
       var coverUrl = ($submitThumb && !$submitThumb.hidden ? $submitThumb.src : '') || (document.getElementById('sf-cover') || {}).value || '';
@@ -512,7 +511,7 @@
         title: document.getElementById('sf-title').value,
         authors: (document.getElementById('sf-authors') || {}).value || '',
         desc: (document.getElementById('sf-desc') || {}).value || '',
-        entity: entity,
+        entity: 'Studio Artifice',
         mode: mode,
         tags: (document.getElementById('sf-tags') || {}).value || '',
         source: (document.getElementById('sf-source') || {}).value || 'Submission',
@@ -536,7 +535,6 @@
       document.getElementById('sf-authors').value = '';
       document.getElementById('sf-medium').selectedIndex = 0;
       document.getElementById('sf-mode').selectedIndex = 0;
-      document.getElementById('sf-entity').selectedIndex = 0;
       document.getElementById('sf-tags').value = '';
       var srcInput = document.getElementById('sf-source');
       if (srcInput) srcInput.value = '';

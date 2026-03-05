@@ -395,6 +395,22 @@
       padding: 0 16px; cursor: pointer; white-space: nowrap;
     }
     .submit-ig-btn:hover { background: var(--text-2); }
+    .mode-info-trigger {
+      position: relative; cursor: help;
+      color: var(--text-3); font-size: 11px; margin-left: 2px;
+    }
+    .mode-info-tooltip {
+      display: none; position: absolute; bottom: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%); width: 260px;
+      font-family: var(--mono); font-size: 9px; font-weight: 400;
+      text-transform: none; letter-spacing: 0;
+      color: var(--text-2); line-height: 1.6;
+      background: rgba(15,15,15,0.95); border: 1px solid rgba(255,255,255,0.12);
+      padding: 12px 14px; border-radius: 6px; z-index: 100;
+      pointer-events: none;
+    }
+    .mode-info-trigger:hover .mode-info-tooltip,
+    .mode-info-trigger:focus .mode-info-tooltip { display: block; }
     .submit-form { text-align: left; margin-top: 12px; }
     .submit-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
     .submit-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
@@ -802,11 +818,8 @@
             <label class="submit-field"><span>Medium</span>
               <select id="sf-medium"><option value="">Select...</option><option>Object</option><option>Spatial</option><option>Digital</option><option>Performance</option><option>Protocol</option><option>Interface</option><option>Documentation</option><option>Environmental</option></select>
             </label>
-            <label class="submit-field"><span>Mode</span>
+            <label class="submit-field"><span>Mode <span class="mode-info-trigger" tabindex="0">&#9432;<span class="mode-info-tooltip">WHITEBOX — Process-visible, research, educational. The work is shown with its methods, tools, and reasoning exposed.<br><br>BLACKBOX — Experiential, performative, non-reproducible. The work is encountered as a finished experience.</span></span></span>
               <select id="sf-mode"><option value="">Select...</option><option>WHITEBOX</option><option>BLACKBOX</option></select>
-            </label>
-            <label class="submit-field"><span>Entity</span>
-              <select id="sf-entity"><option value="">Select...</option><option>Studio Artifice</option><option>Artifice NYC</option></select>
             </label>
           </div>
           <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
