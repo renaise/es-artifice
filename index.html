@@ -434,113 +434,103 @@
     }
 
     /* ---- About Section ---- */
-    .about-section { padding: 60px 24px; border-top: 1px solid var(--border); }
+    .about-section { padding: 80px 24px 96px; border-top: 1px solid var(--border); }
     .about-section[hidden] { display: none; }
-    .about-inner { max-width: 800px; margin: 0 auto; }
+    .about-inner { max-width: 900px; margin: 0 auto; }
     .about-title {
-      font-family: var(--sans); font-size: 28px; font-weight: 300;
-      color: var(--text); margin-bottom: 8px;
+      font-family: var(--sans); font-size: 32px; font-weight: 300;
+      color: var(--text); margin-bottom: 12px;
     }
     .about-desc {
-      font-family: var(--mono); font-size: 11px;
-      color: var(--text-2); line-height: 1.6; margin-bottom: 32px;
+      font-family: var(--mono); font-size: 12px;
+      color: var(--text-2); line-height: 1.7; margin-bottom: 48px;
+      max-width: 600px;
     }
+
+    /* Pipeline */
     .about-pipeline {
-      display: flex; align-items: flex-start; gap: 12px;
-      margin-bottom: 32px; flex-wrap: wrap;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; margin-bottom: 48px;
+      background: var(--border); border: 1px solid var(--border);
     }
     .about-book {
-      flex: 1; min-width: 140px;
-      border: 1px solid var(--border); padding: 16px;
+      background: var(--bg); padding: 24px; position: relative;
     }
     .about-book-label {
       font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; color: var(--text-3);
-      display: block; margin-bottom: 4px;
+      letter-spacing: 0.06em;
+      display: block; margin-bottom: 8px;
     }
     .about-book strong {
-      font-family: var(--sans); font-size: 16px; font-weight: 400;
-      color: var(--text); display: block; margin-bottom: 6px;
+      font-family: var(--sans); font-size: 20px; font-weight: 300;
+      color: var(--text); display: block; margin-bottom: 10px;
     }
     .about-book p {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text-3); line-height: 1.6;
+    }
+    .about-book-num {
       font-family: var(--mono); font-size: 9px;
-      color: var(--text-3); line-height: 1.5;
+      color: var(--text-3); opacity: 0.4;
+      position: absolute; top: 24px; right: 24px;
     }
-    .about-arrow {
-      font-size: 18px; color: var(--text-3);
-      padding-top: 28px; flex-shrink: 0;
-    }
-    .about-schema { margin-bottom: 32px; }
+
+    /* Schema */
+    .about-schema { margin-bottom: 48px; }
     .about-schema-label {
       font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; color: var(--text-3);
-      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
     }
     .about-schema-grid {
-      display: flex; flex-wrap: wrap; gap: 6px;
+      display: flex; flex-wrap: wrap; gap: 8px;
     }
     .about-schema-grid span {
-      font-family: var(--mono); font-size: 9px;
+      font-family: var(--mono); font-size: 10px;
       text-transform: uppercase; color: var(--text-2);
-      border: 1px solid var(--border); padding: 4px 10px;
+      border: 1px solid var(--border); padding: 6px 14px;
+      transition: border-color 0.15s;
     }
+    .about-schema-grid span:hover { border-color: var(--text-3); }
+
+    /* Modes */
     .about-modes {
-      display: flex; gap: 24px; margin-top: 20px;
+      display: flex; gap: 32px; margin-top: 24px;
     }
     .about-mode {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .about-mode-icon { height: 20px; width: auto; opacity: 0.8; }
+    .about-mode-icon { height: 22px; width: auto; opacity: 0.8; }
     .about-mode span {
       font-family: var(--mono); font-size: 10px;
       text-transform: uppercase; color: var(--text);
+      letter-spacing: 0.04em;
     }
     .about-mode-desc {
       font-size: 9px !important; color: var(--text-3) !important;
     }
-    /* ---- Program Table ---- */
-    .about-program { margin-bottom: 32px; }
-    .program-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .program-table {
-      width: 100%; border-collapse: collapse;
-      font-family: var(--mono); font-size: 10px;
-      text-transform: uppercase;
-    }
-    .program-table th {
-      text-align: left; padding: 8px 12px;
-      color: var(--text-3); font-weight: 400;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap; letter-spacing: 0.04em;
-    }
-    .program-table td {
-      padding: 10px 12px; color: var(--text-2);
-      border-bottom: 1px solid var(--border);
-      vertical-align: top; line-height: 1.5;
-    }
-    .program-table tr:hover td { color: var(--text); background: rgba(255,255,255,0.02); }
-    .program-table td:first-child { color: var(--text); font-weight: 400; white-space: nowrap; }
-    .program-mode-icon { height: 12px; width: auto; vertical-align: middle; }
-    .program-section td {
-      color: var(--text); font-size: 11px; letter-spacing: 0.08em;
-      padding: 16px 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-    .program-contingent td { opacity: 0.35; }
-    .program-contingent td:first-child::after {
-      content: ' *'; font-size: 8px; vertical-align: super;
-    }
-    .program-footnote {
-      font-family: var(--mono); font-size: 9px;
-      color: var(--text-3); margin-top: 12px; font-style: italic;
-      text-transform: none;
-    }
 
+    /* CTA */
+    .about-cta-wrap {
+      margin-top: 56px; padding-top: 48px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 24px;
+    }
     .about-cta {
-      font-family: var(--mono); font-size: 10px;
-      text-transform: uppercase; letter-spacing: 0.04em;
+      font-family: var(--mono); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em;
       color: var(--bg); background: var(--text);
-      border: none; padding: 10px 24px; cursor: pointer;
+      border: none; padding: 14px 32px; cursor: pointer;
+      transition: background 0.15s;
     }
     .about-cta:hover { background: var(--text-2); }
+    .about-cta-desc {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text-3); line-height: 1.6;
+    }
 
     /* ---- Footer ---- */
     .footer {
@@ -608,9 +598,19 @@
       .header-logo-img { height: 56px; }
       .header-tab { padding: 10px 8px; font-size: 10px; }
       .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-      .about-pipeline { flex-wrap: wrap; }
-      .about-arrow { display: none; }
-      .about-book { min-width: calc(50% - 12px); }
+      .about-pipeline { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .about-section { padding: 48px 20px 64px; }
+      .about-title { font-size: 24px; }
+      .about-desc { font-size: 11px; margin-bottom: 36px; }
+      .about-pipeline { grid-template-columns: repeat(2, 1fr); margin-bottom: 36px; }
+      .about-book { padding: 20px; }
+      .about-book strong { font-size: 17px; }
+      .about-schema { margin-bottom: 36px; }
+      .about-schema-grid span { font-size: 9px; padding: 5px 10px; }
+      .about-modes { gap: 20px; }
+      .about-cta-wrap { flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 40px; padding-top: 36px; }
     }
     @media (max-width: 640px) {
       .header { grid-template-columns: auto 1fr; gap: 6px; padding: 8px 12px; }
@@ -653,14 +653,19 @@
       .mode-toggle-label { font-size: 8px; }
       #atlas-map { height: 280px !important; }
       .atlas-map-section { padding: 0 12px 12px; }
-      .about-section { padding: 32px 16px; }
+      .about-section { padding: 36px 16px 56px; }
       .about-title { font-size: 20px; }
-      .about-desc { font-size: 10px; }
-      .about-book { min-width: 100%; }
-      .about-book strong { font-size: 14px; }
+      .about-desc { font-size: 10px; margin-bottom: 28px; }
+      .about-pipeline { grid-template-columns: 1fr; margin-bottom: 28px; }
+      .about-book { padding: 16px; }
+      .about-book strong { font-size: 15px; }
+      .about-book-num { top: 16px; right: 16px; }
+      .about-schema { margin-bottom: 28px; }
+      .about-schema-grid { gap: 5px; }
+      .about-schema-grid span { font-size: 8px; padding: 4px 8px; }
       .about-modes { flex-direction: column; gap: 12px; }
-      .about-schema-grid { gap: 4px; }
-      .about-schema-grid span { font-size: 8px; padding: 3px 6px; }
+      .about-cta-wrap { margin-top: 28px; padding-top: 28px; }
+      .about-cta { width: 100%; text-align: center; padding: 14px 24px; }
       .profile-header { padding: 16px 12px 8px; }
       .profile-name { font-size: 18px; }
       .profile-bio { font-size: 9px; }
@@ -716,7 +721,7 @@
 
 <div class="group-toggle-bar" id="group-toggle-bar">
   <button class="group-toggle-btn mode-toggle-btn--active" data-group="none">All</button>
-  <button class="group-toggle-btn" data-group="creator">Creator</button>
+  <button class="group-toggle-btn" data-group="creator">Profile</button>
   <button class="group-toggle-btn" data-group="medium">Medium</button>
   <button class="group-toggle-btn" data-group="mode">Mode</button>
   <button class="group-toggle-btn" data-group="entity">Entity</button>
@@ -734,13 +739,10 @@
     <h2 class="about-title">[ECO SYSTEM]</h2>
     <p class="about-desc">A structured, relational dataset of creative process. The books are databases of a shared schema.</p>
     <div class="about-pipeline">
-      <div class="about-book"><span class="about-book-label">Discover</span><strong>Radar</strong><p>Scanning for signals across the creative landscape.</p></div>
-      <span class="about-arrow">&rarr;</span>
-      <div class="about-book"><span class="about-book-label">Connect</span><strong>Profiles</strong><p>Contracted profiles, relationships, and IP.</p></div>
-      <span class="about-arrow">&rarr;</span>
-      <div class="about-book"><span class="about-book-label">Locate</span><strong>Atlas</strong><p>Physical venues and their capabilities. Every location indexed.</p></div>
-      <span class="about-arrow">&rarr;</span>
-      <div class="about-book"><span class="about-book-label">Archive</span><strong>Index</strong><p>Work + projects + programs, indexed with full provenance.</p></div>
+      <div class="about-book"><span class="about-book-num">01</span><span class="about-book-label">Discover</span><strong>Radar</strong><p>Scanning for signals across the creative landscape.</p></div>
+      <div class="about-book"><span class="about-book-num">02</span><span class="about-book-label">Connect</span><strong>Profiles</strong><p>Contracted profiles, relationships, and IP.</p></div>
+      <div class="about-book"><span class="about-book-num">03</span><span class="about-book-label">Locate</span><strong>Atlas</strong><p>Physical venues and their capabilities.</p></div>
+      <div class="about-book"><span class="about-book-num">04</span><span class="about-book-label">Archive</span><strong>Index</strong><p>Work + projects + programs, indexed with full provenance.</p></div>
     </div>
     <div class="about-schema">
       <p class="about-schema-label">Shared Schema</p>
@@ -753,7 +755,10 @@
         <div class="about-mode"><img src="bb-overlay.png" class="about-mode-icon" alt=""><span>BLACKBOX</span><span class="about-mode-desc">Experiential, performative, non-reproducible</span></div>
       </div>
     </div>
-    <button class="about-cta" id="about-submit-cta">Submit an Artifact</button>
+    <div class="about-cta-wrap">
+      <button class="about-cta" id="about-submit-cta">Submit an Artifact</button>
+      <span class="about-cta-desc">Add your work to the Index. Upload a cover, fill in the schema, and submit for review.</span>
+    </div>
   </div>
 </section>
 
@@ -776,11 +781,12 @@
         <img class="submit-thumb" id="submit-thumb" src="" alt="" hidden>
         <div class="submit-ghost-label" id="submit-ghost-label">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Drop image or paste URL</span>
+          <span>Upload image or drop file</span>
         </div>
+        <input type="file" id="submit-file-input" accept="image/*" style="display:none">
       </div>
       <div class="submit-url-row">
-        <input type="url" class="submit-ig-input" id="sf-cover" placeholder="Paste image URL..." autocomplete="off">
+        <input type="url" class="submit-ig-input" id="sf-cover" placeholder="Or paste image URL..." autocomplete="off">
         <button class="submit-ig-btn" id="ig-fetch">Import</button>
       </div>
     </div>

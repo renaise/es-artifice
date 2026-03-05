@@ -415,7 +415,7 @@
           });
       } else {
         $submitForm.hidden = false;
-        $igStatus.textContent = 'Paste an image URL above and click Import to auto-classify, or fill manually.';
+        $igStatus.textContent = 'Upload an image above or fill in the fields manually.';
       }
     });
   }
@@ -444,6 +444,21 @@
     });
   }
 
+  // File input for local upload
+  var $fileInput = document.getElementById('submit-file-input');
+
+  function handleFileUpload(file) {
+    if (file && file.type.startsWith('image/')) {
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        showImagePreview(ev.target.result);
+        $submitForm.hidden = false;
+        if ($igStatus) $igStatus.textContent = 'Image loaded — fill in the details below.';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   // Drag and drop on ghost circle
   if ($ghostCircle) {
     ['dragenter', 'dragover'].forEach(function (evt) {
@@ -460,19 +475,21 @@
     });
     $ghostCircle.addEventListener('drop', function (e) {
       var file = e.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) {
-        var reader = new FileReader();
-        reader.onload = function (ev) {
-          showImagePreview(ev.target.result);
-          $submitForm.hidden = false;
-          if ($igStatus) $igStatus.textContent = 'Image loaded — fill in the details below.';
-        };
-        reader.readAsDataURL(file);
-      }
+      handleFileUpload(file);
     });
-    // Click to paste from clipboard
-    $ghostCircle.addEventListener('click', function () {
-      if ($sfCover) $sfCover.focus();
+    // Click to open file picker
+    $ghostCircle.addEventListener('click', function (e) {
+      if (e.target === $fileInput) return;
+      if ($fileInput) $fileInput.click();
+    });
+  }
+
+  // File input change handler
+  if ($fileInput) {
+    $fileInput.addEventListener('change', function () {
+      if ($fileInput.files && $fileInput.files[0]) {
+        handleFileUpload($fileInput.files[0]);
+      }
     });
   }
 
@@ -486,14 +503,17 @@
         $igStatus.textContent = 'Please select Medium, Mode, and Entity.';
         return;
       }
-      var coverUrl = (document.getElementById('sf-cover') || {}).value || $submitThumb.src || '';
+      var coverUrl = ($submitThumb && !$submitThumb.hidden ? $submitThumb.src : '') || (document.getElementById('sf-cover') || {}).value || '';
       var newArtifact = {
         id: Date.now().toString(),
         code: 'A' + (ARTIFACTS.length + 1),
         type: medium.toLowerCase(),
         title: document.getElementById('sf-title').value,
+        authors: (document.getElementById('sf-authors') || {}).value || '',
+        desc: (document.getElementById('sf-desc') || {}).value || '',
         entity: entity,
         mode: mode,
+        tags: (document.getElementById('sf-tags') || {}).value || '',
         source: (document.getElementById('sf-source') || {}).value || 'Submission',
         thumb: coverUrl
       };
@@ -505,7 +525,19 @@
       });
       render();
       $submitForm.hidden = true;
-      $igUrl.value = '';
+      if ($sfCover) $sfCover.value = '';
+      if ($submitThumb) { $submitThumb.hidden = true; $submitThumb.src = ''; }
+      if ($ghostCircle) $ghostCircle.classList.remove('has-image');
+      if ($fileInput) $fileInput.value = '';
+      document.getElementById('sf-title').value = '';
+      document.getElementById('sf-desc').value = '';
+      document.getElementById('sf-authors').value = '';
+      document.getElementById('sf-medium').selectedIndex = 0;
+      document.getElementById('sf-mode').selectedIndex = 0;
+      document.getElementById('sf-entity').selectedIndex = 0;
+      document.getElementById('sf-tags').value = '';
+      var srcInput = document.getElementById('sf-source');
+      if (srcInput) srcInput.value = '';
       $igStatus.textContent = 'Added to Index as ' + newArtifact.code + '. (Session only — not persisted.)';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
