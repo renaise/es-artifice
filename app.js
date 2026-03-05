@@ -362,6 +362,7 @@
   if ($submitClose && $submitPanel) {
     $submitClose.addEventListener('click', function () {
       $submitPanel.hidden = true;
+      resetSubmitPanel();
     });
   }
   var $submitToggle2 = document.getElementById('cmd-submit-toggle-2');
@@ -524,23 +525,56 @@
         if (t.textContent.trim() === 'Index') t.classList.add('header-tab--active');
       });
       render();
-      // Close panel and reset form
+
+      // Show success state
+      var $uploadZone = document.getElementById('submit-upload-zone');
+      var $success = document.getElementById('submit-success');
+      var $successMeta = document.getElementById('submit-success-meta');
+      if ($uploadZone) $uploadZone.hidden = true;
+      if ($submitForm) $submitForm.hidden = true;
+      if ($igStatus) $igStatus.hidden = true;
+      if ($success) $success.hidden = false;
+      if ($successMeta) $successMeta.textContent = newArtifact.code + ' — ' + newArtifact.title + ' — ' + newArtifact.mode;
+    });
+  }
+
+  // Success state: View in Index
+  var $successView = document.getElementById('submit-success-view');
+  if ($successView) {
+    $successView.addEventListener('click', function () {
+      resetSubmitPanel();
       if ($submitPanel) $submitPanel.hidden = true;
-      if ($sfCover) $sfCover.value = '';
-      if ($submitThumb) { $submitThumb.hidden = true; $submitThumb.src = ''; }
-      if ($ghostCircle) $ghostCircle.classList.remove('has-image');
-      if ($fileInput) $fileInput.value = '';
-      document.getElementById('sf-title').value = '';
-      document.getElementById('sf-desc').value = '';
-      document.getElementById('sf-authors').value = '';
-      document.getElementById('sf-medium').selectedIndex = 0;
-      document.getElementById('sf-mode').selectedIndex = 0;
-      document.getElementById('sf-tags').value = '';
-      var srcInput = document.getElementById('sf-source');
-      if (srcInput) srcInput.value = '';
-      if ($igStatus) $igStatus.textContent = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  }
+
+  // Success state: Submit Another
+  var $successAnother = document.getElementById('submit-success-another');
+  if ($successAnother) {
+    $successAnother.addEventListener('click', function () {
+      resetSubmitPanel();
+    });
+  }
+
+  function resetSubmitPanel() {
+    var $uploadZone = document.getElementById('submit-upload-zone');
+    var $success = document.getElementById('submit-success');
+    if ($uploadZone) $uploadZone.hidden = false;
+    if ($submitForm) $submitForm.hidden = false;
+    if ($igStatus) { $igStatus.hidden = false; $igStatus.textContent = ''; }
+    if ($success) $success.hidden = true;
+    if ($sfCover) $sfCover.value = '';
+    if ($submitThumb) { $submitThumb.hidden = true; $submitThumb.src = ''; }
+    if ($ghostCircle) $ghostCircle.classList.remove('has-image');
+    if ($fileInput) $fileInput.value = '';
+    document.getElementById('sf-title').value = '';
+    document.getElementById('sf-desc').value = '';
+    document.getElementById('sf-authors').value = '';
+    document.getElementById('sf-medium').selectedIndex = 0;
+    document.getElementById('sf-mode').selectedIndex = 0;
+    document.getElementById('sf-tags').value = '';
+    var srcInput = document.getElementById('sf-source');
+    if (srcInput) srcInput.value = '';
   }
 
   render();

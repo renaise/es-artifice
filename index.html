@@ -411,6 +411,25 @@
     }
     .mode-info-trigger:hover .mode-info-tooltip,
     .mode-info-trigger:focus .mode-info-tooltip { display: block; }
+    .submit-success {
+      text-align: center; padding: 32px 16px;
+    }
+    .submit-success[hidden] { display: none; }
+    .submit-success-icon {
+      color: var(--text); margin-bottom: 16px;
+    }
+    .submit-success-title {
+      font-family: var(--sans); font-size: 18px; font-weight: 300;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .submit-success-meta {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text-3); text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .submit-success-actions {
+      display: flex; gap: 8px; justify-content: center;
+    }
     .submit-form { text-align: left; margin-top: 12px; }
     .submit-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
     .submit-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
@@ -831,6 +850,17 @@
         <a href="mailto:info@artificenyc.org?subject=Artifact%20Submission" class="submit-btn submit-btn--alt">Email Instead</a>
       </div>
     </form>
+    <div class="submit-success" id="submit-success" hidden>
+      <div class="submit-success-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <p class="submit-success-title">Added to Index</p>
+      <p class="submit-success-meta" id="submit-success-meta"></p>
+      <div class="submit-success-actions">
+        <button class="submit-btn" id="submit-success-view">View in Index</button>
+        <button class="submit-btn submit-btn--alt" id="submit-success-another">Submit Another</button>
+      </div>
+    </div>
   </div>
 </div>
 
