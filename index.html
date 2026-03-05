@@ -106,6 +106,10 @@
     }
     .header-search::placeholder { color: rgba(255,255,255,0.5); }
     .header-search:focus { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.12); }
+    .header-tab--auth {
+      color: var(--text-3); border-bottom: none;
+    }
+    .header-tab--auth:hover { color: var(--text); }
     .header-cta {
       font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; letter-spacing: 0.04em;
@@ -765,6 +769,7 @@
     <a href="#" class="header-tab">Profiles</a>
     <a href="#" class="header-tab">Atlas</a>
     <a href="#" class="header-tab header-tab--active">Index</a>
+    <a href="#" class="header-tab" id="about-tab">Eco System</a>
   </nav>
   <div class="header-right">
     <div class="view-toggle">
@@ -775,7 +780,8 @@
         <svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="3"/><rect x="1" y="6.5" width="14" height="3"/><rect x="1" y="12" width="14" height="3"/></svg>
       </button>
     </div>
-    <a href="#" class="header-tab" id="about-tab">About</a>
+    <a href="#" class="header-tab header-tab--auth" id="header-create-account">Create Account</a>
+    <a href="#" class="header-tab header-tab--auth" id="header-login">Login</a>
     <button class="header-cta" id="header-submit-cta">Submit</button>
   </div>
 </header>

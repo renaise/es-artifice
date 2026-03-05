@@ -330,6 +330,7 @@
     tab.addEventListener('click', function (e) {
       e.preventDefault();
       var raw = tab.textContent.trim().toLowerCase().replace(/\s.*/, '');
+      if (raw === 'eco') raw = 'about';
       if (raw === 'atlas' || raw === 'index' || raw === 'about' || raw === 'profiles') {
         tab.classList.add('header-tab--active');
         switchTab(raw);
