@@ -379,6 +379,101 @@
     });
   }
 
+  // Auth modal
+  var $authModal = document.getElementById('auth-modal');
+  var $authOverlay = document.getElementById('auth-overlay');
+  var $authClose = document.getElementById('auth-modal-close');
+  var $authCreateForm = document.getElementById('auth-create-form');
+  var $authLoginForm = document.getElementById('auth-login-form');
+  var $authSuccess = document.getElementById('auth-success');
+
+  function openAuth(view) {
+    if ($authModal) $authModal.hidden = false;
+    if ($authOverlay) $authOverlay.hidden = false;
+    showAuthView(view);
+  }
+
+  function closeAuth() {
+    if ($authModal) $authModal.hidden = true;
+    if ($authOverlay) $authOverlay.hidden = true;
+    resetAuthModal();
+  }
+
+  function showAuthView(view) {
+    document.querySelectorAll('.auth-tab').forEach(function (t) {
+      t.classList.toggle('auth-tab--active', t.getAttribute('data-auth-view') === view);
+    });
+    if ($authCreateForm) $authCreateForm.hidden = view !== 'create';
+    if ($authLoginForm) $authLoginForm.hidden = view !== 'login';
+    if ($authSuccess) $authSuccess.hidden = true;
+  }
+
+  function resetAuthModal() {
+    if ($authCreateForm) { $authCreateForm.hidden = false; $authCreateForm.reset(); }
+    if ($authLoginForm) { $authLoginForm.hidden = true; $authLoginForm.reset(); }
+    if ($authSuccess) $authSuccess.hidden = true;
+    document.querySelectorAll('.auth-tab').forEach(function (t) {
+      t.classList.toggle('auth-tab--active', t.getAttribute('data-auth-view') === 'create');
+    });
+  }
+
+  // Header buttons
+  var $headerCreate = document.getElementById('header-create-account');
+  var $headerLogin = document.getElementById('header-login');
+  if ($headerCreate) {
+    $headerCreate.addEventListener('click', function (e) {
+      e.preventDefault();
+      openAuth('create');
+    });
+  }
+  if ($headerLogin) {
+    $headerLogin.addEventListener('click', function (e) {
+      e.preventDefault();
+      openAuth('login');
+    });
+  }
+
+  // Close
+  if ($authClose) $authClose.addEventListener('click', closeAuth);
+  if ($authOverlay) $authOverlay.addEventListener('click', closeAuth);
+
+  // Tab switching
+  document.querySelectorAll('.auth-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      showAuthView(tab.getAttribute('data-auth-view'));
+    });
+  });
+
+  // Create account submit
+  if ($authCreateForm) {
+    $authCreateForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('auth-name').value;
+      var email = document.getElementById('auth-email-create').value;
+      // Show success (backend not wired yet)
+      $authCreateForm.hidden = true;
+      if ($authSuccess) {
+        $authSuccess.hidden = false;
+        document.getElementById('auth-success-title').textContent = 'Check your inbox';
+        document.getElementById('auth-success-desc').textContent = 'We sent a verification link to ' + email + '. Click it to activate your account.';
+      }
+    });
+  }
+
+  // Login submit
+  if ($authLoginForm) {
+    $authLoginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('auth-email-login').value;
+      $authLoginForm.hidden = true;
+      if ($authSuccess) {
+        $authSuccess.hidden = false;
+        document.getElementById('auth-success-title').textContent = 'Check your inbox';
+        document.getElementById('auth-success-desc').textContent = 'We sent a login link to ' + email + '. It expires in 15 minutes.';
+      }
+    });
+  }
+
   // AI Import
   var WORKER_URL = 'https://artifice-ig-import.developer-fec.workers.dev';
   var $igFetch = document.getElementById('ig-fetch');

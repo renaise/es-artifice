@@ -84,8 +84,10 @@
       font-family: var(--mono); font-size: 11px;
       text-transform: uppercase; letter-spacing: 0.04em;
       color: var(--text-3); text-decoration: none;
-      padding: 15px 14px; border-bottom: 1px solid transparent;
-      margin-bottom: -1px; transition: color 0.12s;
+      padding: 0 14px; height: 100%;
+      display: flex; align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.12s;
     }
     .header-tab:hover { color: var(--text-2); }
     .header-tab--active { color: var(--text); border-bottom-color: var(--text); }
@@ -94,7 +96,7 @@
     .lock-icon { width: 9px; height: 9px; fill: currentColor; vertical-align: middle; margin-left: 2px; margin-top: -1px; }
 
     .header-right {
-      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 16px;
       min-width: 0; flex-shrink: 1;
     }
     .header-search {
@@ -107,7 +109,8 @@
     .header-search::placeholder { color: rgba(255,255,255,0.5); }
     .header-search:focus { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.12); }
     .header-tab--auth {
-      color: var(--text-3); border-bottom: none;
+      color: var(--text-3); border-bottom-color: transparent;
+      font-size: 9px;
     }
     .header-tab--auth:hover { color: var(--text); }
     .header-cta {
@@ -614,6 +617,65 @@
       color: var(--text-3); line-height: 1.6;
     }
 
+    /* ---- Auth Modal ---- */
+    .auth-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .auth-overlay[hidden] { display: none; }
+    .auth-modal {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 201; width: min(420px, calc(100vw - 32px));
+      background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 32px;
+    }
+    .auth-modal[hidden] { display: none; }
+    .auth-modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; color: var(--text-3);
+      font-size: 20px; cursor: pointer; padding: 0 4px;
+      line-height: 1;
+    }
+    .auth-modal-close:hover { color: var(--text); }
+    .auth-tabs {
+      display: flex; gap: 0; margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .auth-tab {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-3); background: none; border: none;
+      padding: 0 0 12px; margin-right: 24px;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.12s;
+    }
+    .auth-tab:hover { color: var(--text-2); }
+    .auth-tab--active { color: var(--text); border-bottom-color: var(--text); }
+    .auth-form { display: flex; flex-direction: column; gap: 12px; }
+    .auth-form[hidden] { display: none; }
+    .auth-desc {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text-2); line-height: 1.6;
+      margin-bottom: 4px;
+    }
+    .auth-submit-btn {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--bg); background: var(--text);
+      border: none; height: 38px; cursor: pointer;
+      margin-top: 4px; transition: background 0.15s;
+    }
+    .auth-submit-btn:hover { background: var(--text-2); }
+    .auth-footer-text {
+      font-family: var(--mono); font-size: 8px;
+      color: var(--text-3); line-height: 1.5;
+      text-align: center; margin-top: 4px;
+    }
+    .auth-success { text-align: center; padding: 20px 0; }
+    .auth-success[hidden] { display: none; }
+
     /* ---- Footer ---- */
     .footer {
       padding: 16px 24px; border-top: 1px solid var(--border);
@@ -678,7 +740,7 @@
     @media (max-width: 1024px) {
       .header { height: auto; min-height: 48px; padding: 8px 16px; }
       .header-logo-img { height: 56px; }
-      .header-tab { padding: 10px 8px; font-size: 10px; }
+      .header-tab { padding: 0 8px; font-size: 10px; }
       .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
       .about-pipeline { grid-template-columns: repeat(2, 1fr); }
     }
@@ -697,7 +759,9 @@
     @media (max-width: 640px) {
       .header { grid-template-columns: auto 1fr; gap: 6px; padding: 8px 12px; }
       .header-nav { display: none; }
-      .header-right { justify-content: flex-end; gap: 6px; }
+      .header-right { justify-content: flex-end; gap: 10px; }
+      .header-tab--auth { font-size: 8px; padding: 0 4px; }
+      .auth-modal { padding: 24px 20px; }
       .header-left { gap: 6px; }
       .header-logo-img { height: 40px; }
       .view-btn { width: 24px; height: 24px; }
@@ -932,6 +996,44 @@
         <button class="submit-btn submit-btn--alt" id="submit-success-another">Submit Another</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Auth modal -->
+<div class="auth-overlay" id="auth-overlay" hidden></div>
+<div class="auth-modal" id="auth-modal" hidden>
+  <button class="auth-modal-close" id="auth-modal-close">&times;</button>
+  <div class="auth-tabs">
+    <button class="auth-tab auth-tab--active" data-auth-view="create">Create Account</button>
+    <button class="auth-tab" data-auth-view="login">Login</button>
+  </div>
+
+  <!-- Create Account view -->
+  <form class="auth-form" id="auth-create-form">
+    <p class="auth-desc">Join the Artifact Index to submit work, build your profile, and contribute to the archive.</p>
+    <label class="submit-field"><span>Name</span><input type="text" id="auth-name" required placeholder="Full name"></label>
+    <label class="submit-field"><span>Email</span><input type="email" id="auth-email-create" required placeholder="you@example.com"></label>
+    <label class="submit-field"><span>Practice</span><input type="text" id="auth-practice" placeholder="e.g. Spatial design, Sound art"></label>
+    <label class="submit-field"><span>Website / Portfolio</span><input type="url" id="auth-url" placeholder="https://"></label>
+    <button type="submit" class="auth-submit-btn">Create Account</button>
+    <p class="auth-footer-text">By creating an account you agree to the Artifact Index terms and attribution framework.</p>
+  </form>
+
+  <!-- Login view -->
+  <form class="auth-form" id="auth-login-form" hidden>
+    <p class="auth-desc">Enter your email to receive a login link. No password needed.</p>
+    <label class="submit-field"><span>Email</span><input type="email" id="auth-email-login" required placeholder="you@example.com"></label>
+    <button type="submit" class="auth-submit-btn">Send Magic Link</button>
+    <p class="auth-footer-text">We'll send a one-time login link to your inbox.</p>
+  </form>
+
+  <!-- Success state -->
+  <div class="auth-success" id="auth-success" hidden>
+    <div class="submit-success-icon">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <p class="submit-success-title" id="auth-success-title">Check your inbox</p>
+    <p class="auth-desc" id="auth-success-desc">We sent a login link to your email. Click it to continue.</p>
   </div>
 </div>
 
