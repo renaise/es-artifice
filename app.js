@@ -495,6 +495,15 @@
     });
   }
 
+  // Description char count
+  var $sfDesc = document.getElementById('sf-desc');
+  var $sfDescCount = document.getElementById('sf-desc-count');
+  if ($sfDesc && $sfDescCount) {
+    $sfDesc.addEventListener('input', function () {
+      $sfDescCount.textContent = $sfDesc.value.length + ' / 400';
+    });
+  }
+
   // Custom select dropdowns
   document.querySelectorAll('.custom-select').forEach(function (sel) {
     var trigger = sel.querySelector('.custom-select-trigger');

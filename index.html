@@ -447,8 +447,9 @@
       border: 1px solid var(--border); padding: 8px 10px; outline: none;
       height: 34px; text-transform: uppercase; letter-spacing: 0.02em;
     }
-    .submit-field textarea { height: auto; min-height: 60px; resize: vertical; text-transform: none; }
+    .submit-field textarea { height: 60px; resize: none; text-transform: none; overflow-y: auto; }
     .submit-field input::placeholder { color: var(--text-3); text-transform: uppercase; }
+    .char-count { float: right; font-size: 8px; color: var(--text-3); letter-spacing: 0; }
     .submit-field input:focus, .submit-field textarea:focus {
       border-color: rgba(255,255,255,0.3);
     }
@@ -873,7 +874,7 @@
       <div class="submit-form-row">
         <div class="submit-fields">
           <label class="submit-field"><span>Title</span><input type="text" id="sf-title" required></label>
-          <label class="submit-field"><span>Description</span><textarea id="sf-desc" rows="2"></textarea></label>
+          <label class="submit-field"><span>Description <span class="char-count" id="sf-desc-count">0 / 400</span></span><textarea id="sf-desc" maxlength="400"></textarea></label>
           <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors"></label>
           <div class="submit-field-row">
             <div class="submit-field">
