@@ -370,6 +370,12 @@
       $submitPanel.hidden = !$submitPanel.hidden;
     });
   }
+  var $headerSubmitCta = document.getElementById('header-submit-cta');
+  if ($headerSubmitCta && $submitPanel) {
+    $headerSubmitCta.addEventListener('click', function () {
+      $submitPanel.hidden = false;
+    });
+  }
 
   // AI Import
   var WORKER_URL = 'https://artifice-ig-import.developer-fec.workers.dev';
