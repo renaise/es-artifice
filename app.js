@@ -495,6 +495,42 @@
     });
   }
 
+  // Custom select dropdowns
+  document.querySelectorAll('.custom-select').forEach(function (sel) {
+    var trigger = sel.querySelector('.custom-select-trigger');
+    var options = sel.querySelectorAll('.custom-select-option');
+    var hidden = sel.querySelector('input[type="hidden"]');
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      // Close all others
+      document.querySelectorAll('.custom-select.open').forEach(function (s) {
+        if (s !== sel) s.classList.remove('open');
+      });
+      sel.classList.toggle('open');
+    });
+
+    options.forEach(function (opt) {
+      opt.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var val = opt.getAttribute('data-value');
+        hidden.value = val;
+        trigger.textContent = opt.textContent;
+        trigger.classList.remove('placeholder');
+        options.forEach(function (o) { o.classList.remove('selected'); });
+        opt.classList.add('selected');
+        sel.classList.remove('open');
+      });
+    });
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.custom-select.open').forEach(function (s) {
+      s.classList.remove('open');
+    });
+  });
+
   if ($submitForm) {
     $submitForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -570,8 +606,13 @@
     document.getElementById('sf-title').value = '';
     document.getElementById('sf-desc').value = '';
     document.getElementById('sf-authors').value = '';
-    document.getElementById('sf-medium').selectedIndex = 0;
-    document.getElementById('sf-mode').selectedIndex = 0;
+    document.getElementById('sf-medium').value = '';
+    document.getElementById('sf-mode').value = '';
+    document.querySelectorAll('.custom-select').forEach(function (sel) {
+      var trigger = sel.querySelector('.custom-select-trigger');
+      trigger.innerHTML = '<span class="placeholder">Select...</span>';
+      sel.querySelectorAll('.custom-select-option').forEach(function (o) { o.classList.remove('selected'); });
+    });
     document.getElementById('sf-tags').value = '';
     var srcInput = document.getElementById('sf-source');
     if (srcInput) srcInput.value = '';

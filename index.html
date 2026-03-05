@@ -383,16 +383,18 @@
     .submit-panel-close:hover { color: var(--text); }
     .submit-ig-input-wrap { display: flex; gap: 8px; margin-bottom: 12px; }
     .submit-ig-input {
-      flex: 1; height: 32px; padding: 0 10px;
+      flex: 1; height: 34px; padding: 0 10px;
       font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.02em;
       color: var(--text); background: rgba(255,255,255,0.06);
       border: 1px solid var(--border); outline: none;
     }
     .submit-ig-input:focus { border-color: rgba(255,255,255,0.3); }
     .submit-ig-btn {
       font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: var(--bg); background: var(--text); border: none;
-      padding: 0 16px; cursor: pointer; white-space: nowrap;
+      height: 34px; padding: 0 16px; cursor: pointer; white-space: nowrap;
     }
     .submit-ig-btn:hover { background: var(--text-2); }
     .mode-info-trigger {
@@ -439,19 +441,59 @@
       font-family: var(--mono); font-size: 9px;
       text-transform: uppercase; color: var(--text-3);
     }
-    .submit-field input, .submit-field textarea, .submit-field select {
+    .submit-field input, .submit-field textarea {
       font-family: var(--mono); font-size: 10px;
       color: var(--text); background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border); padding: 4px 8px; outline: none;
+      border: 1px solid var(--border); padding: 8px 10px; outline: none;
+      height: 34px; text-transform: uppercase; letter-spacing: 0.02em;
     }
-    .submit-field input:focus, .submit-field textarea:focus, .submit-field select:focus {
+    .submit-field textarea { height: auto; min-height: 60px; resize: vertical; text-transform: none; }
+    .submit-field input::placeholder { color: var(--text-3); text-transform: uppercase; }
+    .submit-field input:focus, .submit-field textarea:focus {
       border-color: rgba(255,255,255,0.3);
     }
+    /* Custom dropdown */
+    .custom-select {
+      position: relative; cursor: pointer;
+    }
+    .custom-select-trigger {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text); background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border); padding: 0 28px 0 10px;
+      text-transform: uppercase; letter-spacing: 0.02em;
+      display: flex; align-items: center; width: 100%;
+      height: 34px; position: relative;
+      transition: border-color 0.15s;
+    }
+    .custom-select-trigger::after {
+      content: ''; position: absolute; right: 10px; top: 50%;
+      transform: translateY(-50%);
+      border-left: 4px solid transparent; border-right: 4px solid transparent;
+      border-top: 4px solid var(--text-3);
+    }
+    .custom-select.open .custom-select-trigger { border-color: rgba(255,255,255,0.3); }
+    .custom-select-trigger .placeholder { color: var(--text-3); }
+    .custom-select-options {
+      display: none; position: absolute; top: calc(100% + 2px); left: 0;
+      width: 100%; z-index: 200;
+      background: #111; border: 1px solid rgba(255,255,255,0.12);
+      max-height: 200px; overflow-y: auto;
+    }
+    .custom-select.open .custom-select-options { display: block; }
+    .custom-select-option {
+      font-family: var(--mono); font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.02em;
+      color: var(--text-2); padding: 8px 10px;
+      cursor: pointer; transition: all 0.1s;
+    }
+    .custom-select-option:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .custom-select-option.selected { color: var(--text); }
     .submit-field-row { display: flex; gap: 8px; }
     .submit-field-row .submit-field { flex: 1; }
     .submit-form-actions { display: flex; gap: 8px; margin-top: 8px; }
     .submit-btn {
-      display: inline-block; padding: 8px 20px;
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 34px; padding: 0 20px;
       font-family: var(--mono); font-size: 10px;
       text-transform: uppercase; letter-spacing: 0.04em;
       color: var(--bg); background: var(--text);
@@ -834,12 +876,34 @@
           <label class="submit-field"><span>Description</span><textarea id="sf-desc" rows="2"></textarea></label>
           <label class="submit-field"><span>Authors</span><input type="text" id="sf-authors"></label>
           <div class="submit-field-row">
-            <label class="submit-field"><span>Medium</span>
-              <select id="sf-medium"><option value="">Select...</option><option>Object</option><option>Spatial</option><option>Digital</option><option>Performance</option><option>Protocol</option><option>Interface</option><option>Documentation</option><option>Environmental</option></select>
-            </label>
-            <label class="submit-field"><span>Mode <span class="mode-info-trigger" tabindex="0">&#9432;<span class="mode-info-tooltip">WHITEBOX — Process-visible, research, educational. The work is shown with its methods, tools, and reasoning exposed.<br><br>BLACKBOX — Experiential, performative, non-reproducible. The work is encountered as a finished experience.</span></span></span>
-              <select id="sf-mode"><option value="">Select...</option><option>WHITEBOX</option><option>BLACKBOX</option></select>
-            </label>
+            <div class="submit-field">
+              <span>Medium</span>
+              <div class="custom-select" id="cs-medium" data-target="sf-medium">
+                <div class="custom-select-trigger"><span class="placeholder">Select...</span></div>
+                <div class="custom-select-options">
+                  <div class="custom-select-option" data-value="Object">Object</div>
+                  <div class="custom-select-option" data-value="Spatial">Spatial</div>
+                  <div class="custom-select-option" data-value="Digital">Digital</div>
+                  <div class="custom-select-option" data-value="Performance">Performance</div>
+                  <div class="custom-select-option" data-value="Protocol">Protocol</div>
+                  <div class="custom-select-option" data-value="Interface">Interface</div>
+                  <div class="custom-select-option" data-value="Documentation">Documentation</div>
+                  <div class="custom-select-option" data-value="Environmental">Environmental</div>
+                </div>
+                <input type="hidden" id="sf-medium" value="">
+              </div>
+            </div>
+            <div class="submit-field">
+              <span>Mode <span class="mode-info-trigger" tabindex="0">&#9432;<span class="mode-info-tooltip">WHITEBOX — Process-visible, research, educational. The work is shown with its methods, tools, and reasoning exposed.<br><br>BLACKBOX — Experiential, performative, non-reproducible. The work is encountered as a finished experience.</span></span></span>
+              <div class="custom-select" id="cs-mode" data-target="sf-mode">
+                <div class="custom-select-trigger"><span class="placeholder">Select...</span></div>
+                <div class="custom-select-options">
+                  <div class="custom-select-option" data-value="WHITEBOX">Whitebox</div>
+                  <div class="custom-select-option" data-value="BLACKBOX">Blackbox</div>
+                </div>
+                <input type="hidden" id="sf-mode" value="">
+              </div>
+            </div>
           </div>
           <label class="submit-field"><span>Tags</span><input type="text" id="sf-tags" placeholder="comma-separated"></label>
           <label class="submit-field"><span>Source URL (optional)</span><input type="url" id="sf-source" placeholder="Instagram, Are.na, etc."></label>
